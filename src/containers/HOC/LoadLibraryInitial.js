@@ -5,25 +5,21 @@ import { connect } from 'react-redux';
 import customBindActionCreators from '../../lib/customBindActionCreators';
 
 // Actions
-import { loadLibrary } from '../../data/books/BooksActions';
+import { loadLibraryAsync } from '../../data/books/BooksActions';
 
+// Used to preload library data to redux
 class LoadLibraryInitial extends PureComponent {
-	constructor(props){
-		super(props);
-		this.state = {
-			mounted: false,
-		};
-	}
-
 	componentDidMount() {
-		const { loadLibrary } = this.props;
-		loadLibrary();
+		const { loadLibraryAsync } = this.props;
+		loadLibraryAsync();
 	}
 
 	render() {
-		const { mounted } = this.state;
-		const { children } = this.props;
-		if (!mounted) {
+		const {
+			initialized,
+			children,
+		} = this.props;
+		if (!initialized) {
 			return null;
 		}
 		return children;
@@ -31,14 +27,21 @@ class LoadLibraryInitial extends PureComponent {
 }
 
 LoadLibraryInitial.propTypes = {
-	loadLibrary: propTypes.func.isRequired,
+	loadLibraryAsync: propTypes.func.isRequired,
 	children: propTypes.node.isRequired,
+	initialized: propTypes.bool.isRequired,
 };
+
+function mapStateToProps(state) {
+	return {
+		initialized: state.getIn(['books', 'initialized']),
+	};
+}
 
 function mapDispatchToProps(dispatch) {
 	return customBindActionCreators({
-		loadLibrary,
+		loadLibraryAsync,
 	}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(LoadLibraryInitial);
+export default connect(mapStateToProps, mapDispatchToProps)(LoadLibraryInitial);
