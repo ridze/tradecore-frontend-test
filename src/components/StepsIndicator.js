@@ -29,7 +29,6 @@ const StepsIndicator = ({ steps, activeStepIndex }) => {
 	return (
 		<Steps
 			labelPlacement="vertical"
-
 		>
 			{steps.map((step, index) => (
 				<Step
