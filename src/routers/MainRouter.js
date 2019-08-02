@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 
 // Routers
-import GenresRouter from './GenresRouter';
+import AddBookRouter from './AddBookRouter';
 
 // Pages
 import Home from '../containers/pages/Home';
@@ -16,9 +16,8 @@ const MainRouter = () => {
 				component={Home}
 			/>
 			<Route
-				exact
 				path="/genres"
-				component={GenresRouter}
+				component={AddBookRouter}
 			/>
 			<Redirect to="/home" />
 		</Switch>

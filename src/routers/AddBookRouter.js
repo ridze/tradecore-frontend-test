@@ -1,37 +1,46 @@
 import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
+// Layouts
+import AddBookLayout from '../containers/layouts/AddBookLayout';
+
 // Pages
 import Genres from '../containers/pages/Genres';
 import Subgenres from '../containers/pages/Subgenres';
 import AddSubgenre from '../containers/pages/AddSubgenre';
 import BookInformation from '../containers/pages/BookInformation';
 
-const GenresRouter = () => {
+const withAddBookLayout = (component) => (
+	<AddBookLayout>
+		{component}
+	</AddBookLayout>
+);
+
+const AddBookRouter = () => {
 	return (
 		<Switch>
 			<Route
 				exact
 				path="/genres"
-				component={Genres}
+				render={() => withAddBookLayout(<Genres />)}
 			/>
 			<Route
 				exact
 				path="/genres/:genreId/subgenres"
-				component={Subgenres}
+				render={() => withAddBookLayout(<Subgenres />)}
 			/>
 			<Route
 				exact
 				path="/genres/:genreId/add-subgenre"
-				component={AddSubgenre}
+				render={() => withAddBookLayout(<AddSubgenre />)}
 			/>
 			<Route
 				exact
 				path="/genres/:genreId/:subgenreId/add-book"
-				component={BookInformation}
+				render={() => withAddBookLayout(<BookInformation />)}
 			/>
 		</Switch>
 	);
 };
 
-export default withRouter(GenresRouter);
+export default withRouter(AddBookRouter);
