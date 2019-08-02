@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# webstorm
+.idea
+
 # dependencies
 /node_modules
 /.pnp
@@ -11,12 +14,14 @@
 # production
 /build
 
-# misc
-.DS_Store
+# Local parameters and credentials file
+.env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.DS_Store
 
 npm-debug.log*
 yarn-debug.log*

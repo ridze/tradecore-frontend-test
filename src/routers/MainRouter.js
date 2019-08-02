@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, withRouter, Router } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 // Pages
 import Genres from '../containers/pages/Genres';

@@ -12,12 +12,12 @@ import logger from 'redux-logger';
 import Immutable from 'immutable';
 
 import reducers from '../data/index';
+import rootSaga from '../data/books/BooksSagas';
 
 // Create a history of your choosing (we're using a browser history in this case)
 export const history = createBrowserHistory();
 
 const sagaMiddleware = createSagaMiddleware();
-// sagaMiddleware.run();
 
 const middleware = [
 	routerMiddleware(history),
@@ -41,5 +41,6 @@ export const store = createStore(
 	)
 );
 
+sagaMiddleware.run(rootSaga);
 
 export default store;
