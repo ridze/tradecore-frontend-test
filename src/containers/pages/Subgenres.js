@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import * as Antd from 'antd';
 import customBindActionCreators from '../../lib/customBindActionCreators';
 
 // Actions
@@ -18,6 +19,9 @@ import { ContentWrapper } from '../../components/Wrappers';
 
 // Helpers
 import { mapIdsToSteps } from '../../lib/helpers';
+
+// Antd components
+const { message } = Antd;
 
 class Subgenres extends PureComponent {
 	constructor(props) {
@@ -47,20 +51,27 @@ class Subgenres extends PureComponent {
 
 	componentDidMount() {
 		const {
-			genres,
+			history,
 			match,
+			genres,
 			selectedGenreId,
 			selectGenre,
 		} = this.props;
 		const {
 			genreId,
 		} = match.params;
+
+		// Check if genre with genreId from params exist
 		const selectedGenreIndex = genres.findIndex(genre => genre.get('id') === Number(genreId));
-		this.setState({ selectedGenreIndex});
-		if (selectedGenreId !== Number(genreId)) {
-			selectGenre(Number(genreId));
+		if (selectedGenreIndex !== -1) {
+			this.setState({ selectedGenreIndex});
+			if (selectedGenreId !== Number(genreId)) {
+				selectGenre(Number(genreId));
+			}
+		} else { // Wrong genreId
+			message.error('Requested genre does not exist, please, select from existing ones.', 5);
+			history.push('/genres');
 		}
-		// TODO show error if selectedGenreIndex === -1
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {

@@ -17,14 +17,31 @@ const MyButton = styled(Button)`
 	width: 85px;
 `;
 
-const ControlButtons = ({ onLeftButtonClick, onRightButtonClick, rightButtonText, leftButtonText, disabledRight, disabledLeft }) => {
+const ControlButtons = (props) => {
+	const {
+		onLeftButtonClick,
+		onRightButtonClick,
+		rightButtonText,
+		leftButtonText,
+		disabledRight,
+		disabledLeft,
+		rightButtonForm,
+	} = props;
+
 	return (
 		<Wrapper>
 			<MyButton disabled={disabledLeft} onClick={onLeftButtonClick}>
 				<Icon type="left" />
 				{leftButtonText}
 			</MyButton>
-			<MyButton disabled={disabledRight} type="primary" onClick={onRightButtonClick}>
+			<MyButton
+				disabled={disabledRight}
+				type="primary"
+				onClick={onRightButtonClick}
+				form={rightButtonForm}
+				htmlType={rightButtonForm && "submit"}
+				key={rightButtonForm && "submit"}
+			>
 				{rightButtonText}
 			</MyButton>
 		</Wrapper>
@@ -32,21 +49,23 @@ const ControlButtons = ({ onLeftButtonClick, onRightButtonClick, rightButtonText
 };
 
 ControlButtons.propTypes = {
+	rightButtonForm: PropTypes.string,
 	leftButtonText: PropTypes.string,
 	rightButtonText: PropTypes.string,
-	onLeftButtonClick: PropTypes.func.isRequired,
-	onRightButtonClick: PropTypes.func.isRequired,
+	onLeftButtonClick: PropTypes.func,
+	onRightButtonClick: PropTypes.func,
 	disabledLeft: PropTypes.bool,
 	disabledRight: PropTypes.bool,
 };
 
 ControlButtons.defaultProps = {
+	rightButtonForm: null,
 	leftButtonText: 'Back',
 	rightButtonText: 'Next',
+	onLeftButtonClick: () => {},
+	onRightButtonClick: () => {},
 	disabledLeft: false,
 	disabledRight: false,
-	onLeftButtonClick: null,
-	onRightButtonClick: null,
 };
 
 export default ControlButtons;

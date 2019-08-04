@@ -8,10 +8,21 @@ const initialState = fromJS({
 	selectedGenreId: null,
 	selectedSubgenreId: null,
 	isAddNewSubgenreSelected: false,
+	newBook: {
+		title: '',
+		author: '',
+		isbn: '',
+		publisher: '',
+		datePublished: '',
+		numberOfPages: '',
+		format: '',
+		edition: '',
+		editionLanguage: '',
+		description: '',
+	},
 });
 
 export default function booksReducer(state = initialState, action) {
-	console.log(action.type, state.get('isAddNewSubgenreSelected'));
 	switch (action.type) {
 	case BOOKS_TYPES.LOAD_LIBRARY: {
 		return state
@@ -48,6 +59,19 @@ export default function booksReducer(state = initialState, action) {
 				isDescriptionRequired,
 				id,
 			})));
+	}
+	case BOOKS_TYPES: {
+
+	}
+	case BOOKS_TYPES.ADD_BOOK: {
+		const {
+			selectedGenreIndex,
+			selectedSubgenreIndex,
+			book,
+		} = action.payload;
+		return state.updateIn(['data', 'genres', selectedGenreIndex, 'subgenres', selectedSubgenreIndex], (subgenre) => {
+			return subgenre.get('books') ? subgenre.update('books', books => books.push(fromJS(book))) : subgenre.set('books', fromJS([book]));
+		});
 	}
 	default: {
 		return state;

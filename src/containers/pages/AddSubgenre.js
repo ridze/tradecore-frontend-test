@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import customBindActionCreators from '../../lib/customBindActionCreators';
+import * as Antd from 'antd';
 
 // Actions
 import { selectGenre, selectAddNewSubgenre, addSubgenre } from '../../data/books/BooksActions';
@@ -13,13 +14,15 @@ import { allSteps, STEP_IDS } from '../../lib/constants/addBookSteps';
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import ControlButtons from '../../components/ControlButtons';
-import { Input, Checkbox } from '../../components/Inputs';
 import { ContentWrapper, CheckboxWrapper } from '../../components/Wrappers';
 
 // Helpers
 import { mapIdsToSteps } from '../../lib/helpers';
 
 const myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION];
+
+// Antd components
+const { Input, Checkbox, message } = Antd;
 
 class AddSubgenre extends PureComponent {
 	constructor(props) {
@@ -35,15 +38,19 @@ class AddSubgenre extends PureComponent {
 
 	componentDidMount() {
 		const {
-			genres,
+			history,
 			match,
+			genres,
 			selectGenre,
 			selectAddNewSubgenre,
 		} = this.props;
 		const {
 			genreId,
 		} = match.params;
+
+		// Check if genre with genreId from params exist
 		const selectedGenreIndex = genres.findIndex(genre => genre.get('id') === Number(genreId));
+
 		if (selectedGenreIndex !== - 1) {
 			selectGenre(Number(genreId));
 			selectAddNewSubgenre();
@@ -51,12 +58,9 @@ class AddSubgenre extends PureComponent {
 				initialized: true,
 				selectedGenreIndex,
 			});
-		} else {
-			this.setState({
-				initialized: true,
-				error: true,
-			});
-			// TODO throw invalid genreId error / genre not exist
+		} else { // Wrong genreId
+			message.error('Requested genre does not exist, please, select from existing ones.', 5);
+			history.push('/genres');
 		}
 	}
 
@@ -80,7 +84,7 @@ class AddSubgenre extends PureComponent {
 			selectedGenreId,
 		} = this.props;
 
-		const id = Math.random();
+		const id = Math.random() * Math.pow(10, 16);
 
 		addSubgenre(selectedGenreIndex, name, isDescriptionRequired, id);
 		history.push(`/genres/${selectedGenreId}/${id}/add-book`);
@@ -99,7 +103,6 @@ class AddSubgenre extends PureComponent {
 	render() {
 		const {
 			initialized,
-			error,
 			name,
 			isDescriptionRequired,
 		} = this.state;
@@ -110,19 +113,25 @@ class AddSubgenre extends PureComponent {
 					steps={mapIdsToSteps(myStepsIds, allSteps)}
 					activeStepIndex={2}
 				/>
-				<ContentWrapper>
-					<Input value={name} onChange={this.handleNameChange} />
-					<CheckboxWrapper>
-						<Checkbox checked={isDescriptionRequired} onChange={this.handleIsDescRequiredChange}>
-							Description is required for this subgenre
-						</Checkbox>
-					</CheckboxWrapper>
-					<ControlButtons
-						onLeftButtonClick={this.onBackButtonClick}
-						onRightButtonClick={this.onNextButtonClick}
-						disabledRight={!name}
-					/>
-				</ContentWrapper>
+				{initialized && (
+					<ContentWrapper>
+						<Input
+							value={name}
+							onChange={this.handleNameChange}
+							placeholder="Subgenre name"
+						/>
+						<CheckboxWrapper>
+							<Checkbox checked={isDescriptionRequired} onChange={this.handleIsDescRequiredChange}>
+								Description is required for this subgenre
+							</Checkbox>
+						</CheckboxWrapper>
+						<ControlButtons
+							onLeftButtonClick={this.onBackButtonClick}
+							onRightButtonClick={this.onNextButtonClick}
+							disabledRight={!name}
+						/>
+					</ContentWrapper>
+				)}
 			</div>
 		);
 	}
