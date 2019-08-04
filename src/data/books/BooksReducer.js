@@ -60,8 +60,15 @@ export default function booksReducer(state = initialState, action) {
 				id,
 			})));
 	}
-	case BOOKS_TYPES: {
-
+	case BOOKS_TYPES.SET_NEW_BOOK_DATA: {
+		const {
+			key,
+			value,
+		} = action.payload;
+		return state.setIn(['newBook', key], value);
+	}
+	case BOOKS_TYPES.RESET_NEW_BOOK_DATA: {
+		return state.set('newBook', initialState.get('newBook'));
 	}
 	case BOOKS_TYPES.ADD_BOOK: {
 		const {

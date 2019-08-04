@@ -34,14 +34,18 @@ export function addSubgenre(dispatch, selectedGenreIndex, name, isDescriptionReq
 	});
 }
 
-export function setNewBookData() {
-
+export function setNewBookData(dispatch, key, value) {
+	dispatch({
+		type: BOOKS_TYPES.SET_NEW_BOOK_DATA,
+		payload: {
+			key,
+			value,
+		}
+	});
 }
 
 export function resetNewBookData(dispatch) {
-	dispatch({
-		type: BOOKS_TYPES.RESET_NEW_BOOK_DATA,
-	})
+	dispatch({ type: BOOKS_TYPES.RESET_NEW_BOOK_DATA })
 }
 
 export function addBook(dispatch, selectedGenreIndex, selectedSubgenreIndex, book) {

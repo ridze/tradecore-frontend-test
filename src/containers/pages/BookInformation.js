@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as Antd from 'antd';
+import { message }  from 'antd';
 
 import customBindActionCreators from '../../lib/customBindActionCreators';
 
 // Actions
 import {
-	addSubgenre, selectGenre, selectSubgenre, addBook,
+	addSubgenre, selectGenre, selectSubgenre, setNewBookData, addBook,
 } from '../../data/books/BooksActions';
 
 // Constants
@@ -23,9 +23,6 @@ import AddBookForm from '../../components/AddBookForm';
 // Helpers
 import { mapIdsToSteps } from '../../lib/helpers';
 
-// Antd components
-const { Input, message } = Antd;
-
 class BookInformation extends PureComponent {
 	constructor(props) {
 		console.log('CONSTRUCTOR');
@@ -39,6 +36,7 @@ class BookInformation extends PureComponent {
 		this.state = {
 			initialized: false,
 			error: null,
+			isDescriptionRequired: false,
 		};
 	}
 
@@ -81,7 +79,21 @@ class BookInformation extends PureComponent {
 		}
 
 		if (selectedSubgenreIndex !== -1) {
-			this.setState({ initialized: true });
+			const isDescriptionRequired = genres.getIn([selectedGenreIndex, 'subgenres', selectedSubgenreIndex, 'isDescriptionRequired']);
+
+			console.log('isDescriptionRequired', isDescriptionRequired);
+			this.setState({
+				initialized: true,
+				isDescriptionRequired,
+			});
+
+			this.formItemValidator = (() => {
+				const baseValidator = value => !!value;
+				return isDescriptionRequired ? baseValidator : (value, key) => {
+					return key === 'description' ? true : baseValidator(value);
+				};
+			})();
+
 			// check if subgenre wasn't added immediately before this page, in that case then just keep Add New Subgenre button selected
 			if (!isAddNewSubgenreSelected) {
 				selectSubgenre(Number(subgenreId));
@@ -100,23 +112,45 @@ class BookInformation extends PureComponent {
 		history.push(path);
 	};
 
-	onFormItemChange = (event) => {
-		console.log(event);
-		console.log(event.target);
-		console.log(event.target.value);
+	onFormItemChange = (value, key) => {
+		const {
+			setNewBookData,
+		} = this.props;
+		setNewBookData(key, value);
 	};
 
-	onSubmitButtonClick = () => {};
+	addNewBook = () => {
+		const {
+			addBook,
+			newBook,
+		} = this.props;
+		addBook(newBook);
+	};
 
 	isFormValid = () => {
-
+		const {
+			newBook,
+		} = this.props;
+		const [...keys] = newBook.keys();
+		return keys.reduce((acc, key, index) => {
+			if (!this.formItemValidator(newBook.get(key), key)) {
+				acc = false;
+				keys.splice(0, index + 1);
+			}
+			return acc;
+		}, true);
 	};
 
 	render() {
 		const {
 			initialized,
 			error,
+			isDescriptionRequired,
 		} = this.state;
+
+		const {
+			newBook,
+		} = this.props;
 
 		return (
 			<div>
@@ -128,14 +162,17 @@ class BookInformation extends PureComponent {
 					<ContentWrapper>
 						<AddBookForm
 							id="addBookForm"
-							onFormItemChange={}
+							isDescriptionRequired={isDescriptionRequired}
+							newBook={newBook}
+							onFormItemChange={this.onFormItemChange}
+							onSubmit={this.addNewBook}
 						/>
 						<ControlButtons
 							rightButtonForm="addBookForm"
 							onLeftButtonClick={this.onBackButtonClick}
 							onRightButtonClick={() => {}}
 							rightButtonText="Add"
-							disabledRight={this.isFormValid()}
+							disabledRight={!this.isFormValid()}
 						/>
 					</ContentWrapper>
 				)}
@@ -161,6 +198,7 @@ function mapStateToProps(state) {
 		genres: state.getIn(['books', 'data', 'genres']),
 		selectedGenreId: state.getIn(['books', 'selectedGenreId']),
 		isAddNewSubgenreSelected: state.getIn(['books', 'isAddNewSubgenreSelected']),
+		newBook: state.getIn(['books', 'newBook']),
 	};
 }
 
@@ -169,6 +207,7 @@ function mapDispatchToProps(dispatch) {
 		selectGenre,
 		selectSubgenre,
 		addSubgenre,
+		setNewBookData,
 		addBook,
 	}, dispatch);
 }
