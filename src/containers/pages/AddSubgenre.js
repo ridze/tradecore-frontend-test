@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import uuid from 'uuid';
 import { withRouter } from 'react-router-dom';
 import customBindActionCreators from '../../lib/customBindActionCreators';
 
@@ -14,7 +13,8 @@ import { allSteps, STEP_IDS } from '../../lib/constants/addBookSteps';
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import ControlButtons from '../../components/ControlButtons';
-import { ContentWrapper } from '../../components/Wrappers';
+import { Input, Checkbox } from '../../components/Inputs';
+import { ContentWrapper, CheckboxWrapper } from '../../components/Wrappers';
 
 // Helpers
 import { mapIdsToSteps } from '../../lib/helpers';
@@ -80,15 +80,20 @@ class AddSubgenre extends PureComponent {
 			selectedGenreId,
 		} = this.props;
 
-		const id = uuid();
+		const id = Math.random();
 
-		addSubgenre({
-			selectedGenreIndex,
-			name,
-			isDescriptionRequired,
-			id,
-		});
+		addSubgenre(selectedGenreIndex, name, isDescriptionRequired, id);
 		history.push(`/genres/${selectedGenreId}/${id}/add-book`);
+	};
+
+	handleNameChange = (event) => {
+		const { value } = event.target;
+		this.setState({ name: value });
+	};
+
+	handleIsDescRequiredChange = (event) => {
+		const { checked } = event.target;
+		this.setState({ isDescriptionRequired: checked });
 	};
 
 	render() {
@@ -96,6 +101,7 @@ class AddSubgenre extends PureComponent {
 			initialized,
 			error,
 			name,
+			isDescriptionRequired,
 		} = this.state;
 
 		return (
@@ -105,6 +111,12 @@ class AddSubgenre extends PureComponent {
 					activeStepIndex={2}
 				/>
 				<ContentWrapper>
+					<Input value={name} onChange={this.handleNameChange} />
+					<CheckboxWrapper>
+						<Checkbox checked={isDescriptionRequired} onChange={this.handleIsDescRequiredChange}>
+							Description is required for this subgenre
+						</Checkbox>
+					</CheckboxWrapper>
 					<ControlButtons
 						onLeftButtonClick={this.onBackButtonClick}
 						onRightButtonClick={this.onNextButtonClick}

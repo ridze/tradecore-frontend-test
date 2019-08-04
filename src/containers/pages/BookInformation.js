@@ -37,7 +37,8 @@ class BookInformation extends PureComponent {
 		} = this.props;
 		const {
 			genreId,
-			subgenreId
+			subgenreId,
+			isAddNewSubgenreSelected,
 		} = match.params;
 		const selectedGenreIndex = genres.findIndex(genre => genre.get('id') === Number(genreId));
 		if (selectedGenreIndex !== - 1) {
@@ -46,7 +47,10 @@ class BookInformation extends PureComponent {
 			const selectedSubgenreIndex = selectedGenre.get('subgenres').findIndex(subgenre => subgenre.get('id') === Number(subgenreId));
 			if (selectedSubgenreIndex !== -1) {
 				this.setState({ initialized: true });
-				selectSubgenre(Number(subgenreId));
+				console.log('isAddNewSubgenreSelected', isAddNewSubgenreSelected);
+				if (!isAddNewSubgenreSelected) {
+					selectSubgenre(Number(subgenreId));
+				}
 			} else {
 				this.setState({
 					initialized: true,

@@ -2,21 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="58332d88-8f2e-454e-a863-3b8dfe4c035d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/ControlButtons.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ItemButton.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Wrappers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/StepsIndicator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/StepsIndicator.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Inputs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Wrappers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Wrappers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/pages/AddSubgenre.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/pages/AddSubgenre.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/pages/BookInformation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/pages/BookInformation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/pages/Genres.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/pages/Genres.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/pages/Subgenres.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/pages/Subgenres.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/books/BooksActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/books/BooksActions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/books/BooksReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/books/BooksReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/books/BooksTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/books/BooksTypes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/constants/addBookSteps.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/constants/addBookSteps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/AddBookRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/AddBookRouter.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -56,24 +46,24 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/containers/pages/AddSubgenre.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
+            <state relative-caret-position="105">
+              <caret line="7" column="20" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="20" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
-                <element signature="e#402#463#0" expanded="true" />
+                <element signature="e#476#537#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/containers/pages/BookInformation.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="778">
-              <caret line="70" column="31" lean-forward="true" selection-start-line="70" selection-start-column="31" selection-end-line="70" selection-end-column="31" />
+            <state relative-caret-position="513">
+              <caret line="49" column="82" selection-start-line="49" selection-start-column="82" selection-end-line="49" selection-end-column="82" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
                 <element signature="e#445#506#0" expanded="true" />
@@ -83,12 +73,45 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/data/books/BooksActions.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data/books/BooksReducer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="514">
-              <caret line="46" column="42" lean-forward="true" selection-start-line="46" selection-start-column="42" selection-end-line="46" selection-end-column="42" />
+            <state relative-caret-position="243">
+              <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/Inputs.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="28" lean-forward="true" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/ControlButtons.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-line="3" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -102,24 +125,6 @@
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data/books/BooksActions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="39" lean-forward="true" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lib/constants/libraryData.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="33" column="32" lean-forward="true" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -138,6 +143,9 @@
       <find>selectedSubgenre</find>
       <find>ADD_SUBGENRE</find>
       <find>BOOKS_TYPES.ADD_SUBGENRE</find>
+      <find>add</find>
+      <find>selectGenre</find>
+      <find>selectSubgenre</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -172,7 +180,6 @@
         <option value="$PROJECT_DIR$/src/routers/AddBookRouter.js" />
         <option value="$PROJECT_DIR$/src/components/ContentWrapper.js" />
         <option value="$PROJECT_DIR$/src/components/ItemButton.js" />
-        <option value="$PROJECT_DIR$/src/components/Wrappers.js" />
         <option value="$PROJECT_DIR$/src/components/StepsIndicator.js" />
         <option value="$PROJECT_DIR$/src/data/books/BooksSagas.js" />
         <option value="$PROJECT_DIR$/src/components/ControlButtons.js" />
@@ -180,10 +187,12 @@
         <option value="$PROJECT_DIR$/src/containers/HOC/LoadLibraryInitial.js" />
         <option value="$PROJECT_DIR$/src/containers/pages/Genres.js" />
         <option value="$PROJECT_DIR$/src/containers/pages/Subgenres.js" />
-        <option value="$PROJECT_DIR$/src/containers/pages/BookInformation.js" />
         <option value="$PROJECT_DIR$/src/data/books/BooksActions.js" />
-        <option value="$PROJECT_DIR$/src/data/books/BooksReducer.js" />
+        <option value="$PROJECT_DIR$/src/components/Inputs.js" />
+        <option value="$PROJECT_DIR$/src/components/Wrappers.js" />
         <option value="$PROJECT_DIR$/src/containers/pages/AddSubgenre.js" />
+        <option value="$PROJECT_DIR$/src/data/books/BooksReducer.js" />
+        <option value="$PROJECT_DIR$/src/containers/pages/BookInformation.js" />
       </list>
     </option>
   </component>
@@ -273,12 +282,12 @@
       <updated>1564685526150</updated>
       <workItem from="1564685527369" duration="158000" />
       <workItem from="1564685701847" duration="5587000" />
-      <workItem from="1564736650176" duration="35503000" />
+      <workItem from="1564736650176" duration="37083000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41248000" />
+    <option name="totallyTimeSpent" value="42828000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
@@ -475,23 +484,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Wrappers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="27" lean-forward="true" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ItemButton.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="5" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/StepsIndicator.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -536,16 +528,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ControlButtons.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="34" lean-forward="true" selection-start-line="34" selection-start-column="34" selection-end-line="34" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/books/BooksTypes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -586,6 +568,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ItemButton.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="5" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Wrappers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="28" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/antd/lib/checkbox/Checkbox.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/books/BooksActions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ControlButtons.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="3" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/routers/AddBookRouter.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
@@ -596,41 +619,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/books/BooksActions.js">
+    <entry file="file://$PROJECT_DIR$/src/components/Inputs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="39" lean-forward="true" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="39" />
+        <state relative-caret-position="75">
+          <caret line="5" column="28" lean-forward="true" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/data/books/BooksReducer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="46" column="42" lean-forward="true" selection-start-line="46" selection-start-column="42" selection-end-line="46" selection-end-column="42" />
+        <state relative-caret-position="243">
+          <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/pages/BookInformation.js">
+    <entry file="file://$PROJECT_DIR$/src/containers/pages/AddSubgenre.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="778">
-          <caret line="70" column="31" lean-forward="true" selection-start-line="70" selection-start-column="31" selection-end-line="70" selection-end-column="31" />
+        <state relative-caret-position="105">
+          <caret line="7" column="20" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="20" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <element signature="e#445#506#0" expanded="true" />
+            <element signature="e#476#537#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/pages/AddSubgenre.js">
+    <entry file="file://$PROJECT_DIR$/src/containers/pages/BookInformation.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
+        <state relative-caret-position="513">
+          <caret line="49" column="82" selection-start-line="49" selection-start-column="82" selection-end-line="49" selection-end-column="82" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <element signature="e#402#463#0" expanded="true" />
+            <element signature="e#445#506#0" expanded="true" />
           </folding>
         </state>
       </provider>
