@@ -14,7 +14,7 @@ export const allSteps = {
 		title: 'Information',
 	},
 	pending: {
-		title: null,
+		title: '...',
 		icon: (<span>...</span>),
 	},
 };

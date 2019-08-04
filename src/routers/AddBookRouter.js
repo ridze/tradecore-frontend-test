@@ -31,7 +31,7 @@ const AddBookRouter = () => {
 			/>
 			<Route
 				exact
-				path="/genres/:genreId/add-subgenre"
+				path="/genres/:genreId/subgenres/add-subgenre"
 				render={() => withAddBookLayout(<AddSubgenre />)}
 			/>
 			<Route
