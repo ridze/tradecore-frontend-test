@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
 // Layouts
@@ -16,31 +16,67 @@ const withAddBookLayout = (component) => (
 	</AddBookLayout>
 );
 
-const AddBookRouter = () => {
-	return (
-		<Switch>
-			<Route
-				exact
-				path="/genres"
-				render={() => withAddBookLayout(<Genres />)}
-			/>
-			<Route
-				exact
-				path="/genres/:genreId/subgenres"
-				render={() => withAddBookLayout(<Subgenres />)}
-			/>
-			<Route
-				exact
-				path="/genres/:genreId/subgenres/add-subgenre"
-				render={() => withAddBookLayout(<AddSubgenre />)}
-			/>
-			<Route
-				exact
-				path="/genres/:genreId/:subgenreId/add-book"
-				render={() => withAddBookLayout(<BookInformation />)}
-			/>
-		</Switch>
-	);
-};
+class AddBookRouter extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			initialized: false,
+		};
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		const {
+			history,
+			match,
+		} = this.props;
+
+		console.log(history);
+	}
+
+	componentDidMount() {
+		const {
+			history,
+			match,
+		} = this.props;
+
+		console.log(match);
+		this.setState({ initialized: true });
+	}
+
+	render() {
+		const {
+			initialized,
+		} = this.state;
+
+		if (!initialized) {
+			return null;
+		}
+
+		return (
+			<Switch>
+				<Route
+					exact
+					path="/genres"
+					render={() => withAddBookLayout(<Genres />)}
+				/>
+				<Route
+					exact
+					path="/genres/:genreId/subgenres"
+					render={() => withAddBookLayout(<Subgenres />)}
+				/>
+				<Route
+					exact
+					path="/genres/:genreId/subgenres/add-subgenre"
+					render={() => withAddBookLayout(<AddSubgenre />)}
+				/>
+				<Route
+					exact
+					path="/genres/:genreId/:subgenreId/add-book"
+					render={() => withAddBookLayout(<BookInformation />)}
+				/>
+			</Switch>
+		);
+	}
+}
 
 export default withRouter(AddBookRouter);

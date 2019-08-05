@@ -217,10 +217,6 @@ const WrappedAddBookForm = Form.create({
 			return acc;
 		}, {});
 	},
-
-	onValuesChange(_, values) {
-		console.log(values);
-	},
 })(AddBookForm);
 
 WrappedAddBookForm.propTypes = {

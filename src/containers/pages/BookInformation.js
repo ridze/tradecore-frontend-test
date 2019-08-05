@@ -25,7 +25,6 @@ import { mapIdsToSteps } from '../../lib/helpers';
 
 class BookInformation extends PureComponent {
 	constructor(props) {
-		console.log('CONSTRUCTOR');
 		super(props);
 		const { isAddNewSubgenreSelected } = props;
 		this.myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE];
@@ -35,7 +34,6 @@ class BookInformation extends PureComponent {
 
 		this.state = {
 			initialized: false,
-			error: null,
 			isDescriptionRequired: false,
 			selectedGenreIndex: null,
 			selectedSubgenreIndex: null,
@@ -83,7 +81,6 @@ class BookInformation extends PureComponent {
 		if (selectedSubgenreIndex !== -1) {
 			const isDescriptionRequired = genres.getIn([selectedGenreIndex, 'subgenres', selectedSubgenreIndex, 'isDescriptionRequired']);
 
-			console.log('isDescriptionRequired', isDescriptionRequired);
 			this.setState({
 				initialized: true,
 				isDescriptionRequired,
@@ -99,7 +96,7 @@ class BookInformation extends PureComponent {
 				};
 			})();
 
-			// check if subgenre wasn't added immediately before this page, in that case then just keep Add New Subgenre button selected
+			// check if subgenre wasn't added immediately before this page, in that case just keep Add New Subgenre button selected
 			if (!isAddNewSubgenreSelected) {
 				selectSubgenre(Number(subgenreId));
 			}
@@ -154,7 +151,6 @@ class BookInformation extends PureComponent {
 	render() {
 		const {
 			initialized,
-			error,
 			isDescriptionRequired,
 		} = this.state;
 
@@ -168,7 +164,7 @@ class BookInformation extends PureComponent {
 					steps={mapIdsToSteps(this.myStepsIds, ALL_STEPS)}
 					activeStepIndex={this.activeStepIndex}
 				/>
-				{initialized && !error && (
+				{initialized && (
 					<ContentWrapper>
 						<AddBookForm
 							id="addBookForm"

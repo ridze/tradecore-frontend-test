@@ -7,6 +7,9 @@ import AddBookRouter from './AddBookRouter';
 // Pages
 import Home from '../containers/pages/Home';
 
+// HOC
+import CheckParams from '../containers/HOC/CheckParams';
+
 const MainRouter = () => {
 	return (
 		<Switch>

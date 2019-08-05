@@ -6,9 +6,9 @@ import * as Antd from 'antd';
 const { Button } = Antd;
 
 const MyButton = styled(Button)`
-	margin-left: 20px;
-	&&:first-child {
-		margin-left: 0px;
+	margin: 10px 20px 0px 0px;
+	&&:last-child {
+		margin-right: 0px;
 	}
 `;
 
