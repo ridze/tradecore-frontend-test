@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import customBindActionCreators from '../../lib/customBindActionCreators';
+import customBindActionCreators from '../lib/customBindActionCreators';
 
 // Actions
-import { loadLibraryAsync } from '../../data/books/BooksActions';
+import { loadLibraryAsync } from '../data/books/BooksActions';
 
 // Components
-import CenteredSpinner from '../CenteredSpinner';
+import CenteredSpinner from '../components/CenteredSpinner';
 
 // Used to preload library data to redux
 class LoadLibraryInitial extends PureComponent {

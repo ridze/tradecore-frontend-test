@@ -87,9 +87,6 @@ export default function booksReducer(state = initialState, action) {
 		} = action.payload;
 		return state.setIn(['newBook', key], value);
 	}
-	case BOOKS_TYPES.RESET_NEW_BOOK_DATA: {
-		return state.set('newBook', initialState.get('newBook'));
-	}
 	case BOOKS_TYPES.ADD_BOOK: {
 		const {
 			selectedGenreIndex,

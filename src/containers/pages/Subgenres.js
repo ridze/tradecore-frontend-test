@@ -64,7 +64,7 @@ class Subgenres extends PureComponent {
 		// Check if genre with genreId from params exist
 		const selectedGenreIndex = genres.findIndex(genre => genre.get('id') === Number(genreId));
 		if (selectedGenreIndex !== -1) {
-			this.setState({ selectedGenreIndex});
+			this.setState({ selectedGenreIndex });
 			if (selectedGenreId !== Number(genreId)) {
 				selectGenre(Number(genreId));
 			}
@@ -74,7 +74,7 @@ class Subgenres extends PureComponent {
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps) {
 		const {
 			selectedSubgenreId,
 			isAddNewSubgenreSelected,

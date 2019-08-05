@@ -36,10 +36,7 @@ class AddSubgenre extends PureComponent {
 		super(props);
 		this.state = {
 			initialized: false,
-			error: false,
 			selectedGenreIndex: null,
-			name: '',
-			isDescriptionRequired: false,
 		};
 	}
 
@@ -58,7 +55,7 @@ class AddSubgenre extends PureComponent {
 		// Check if genre with genreId from params exist
 		const selectedGenreIndex = genres.findIndex(genre => genre.get('id') === Number(genreId));
 
-		if (selectedGenreIndex !== - 1) {
+		if (selectedGenreIndex !== -1) {
 			selectGenre(Number(genreId));
 			selectAddNewSubgenre();
 			this.setState({
@@ -109,7 +106,7 @@ class AddSubgenre extends PureComponent {
 
 	handleFieldChange = (key, value) => {
 		const {
-			setNewSubgenreData
+			setNewSubgenreData,
 		} = this.props;
 		setNewSubgenreData(key, value);
 	};

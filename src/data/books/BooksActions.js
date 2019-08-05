@@ -4,6 +4,7 @@ export function loadLibraryAsync(dispatch) {
 	dispatch({ type: BOOKS_TYPES.LOAD_LIBRARY_ASYNC });
 }
 
+// Below actions are not async are not using saga
 export function selectGenre(dispatch, genreId) {
 	dispatch({
 		type: BOOKS_TYPES.SELECT_GENRE,
@@ -54,12 +55,8 @@ export function setNewBookData(dispatch, key, value) {
 		payload: {
 			key,
 			value,
-		}
+		},
 	});
-}
-
-export function resetNewBookData(dispatch) {
-	dispatch({ type: BOOKS_TYPES.RESET_NEW_BOOK_DATA })
 }
 
 export function addBook(dispatch, selectedGenreIndex, selectedSubgenreIndex, book) {

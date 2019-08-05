@@ -45,7 +45,7 @@ class Genres extends PureComponent {
 		this.state = { myStepsIds };
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps) {
 		const {
 			selectedGenreId,
 			selectedSubgenreId,
@@ -99,7 +99,6 @@ class Genres extends PureComponent {
 					<ControlButtons
 						disabledLeft
 						disabledRight={!selectedGenreId}
-						onLeftButtonClick={this.onBackButtonClick}
 						onRightButtonClick={this.onNextButtonClick}
 					/>
 				</ContentWrapper>

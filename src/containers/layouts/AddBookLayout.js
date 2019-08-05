@@ -1,25 +1,23 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const LayoutWrapper = styled.div`
-	padding: 20px;
-`;
+// Components
+import { SmallHeader } from '../../components/Text';
 
+// Layout Specific components
 const PageWrapper = styled.div`
 	padding: 50px;
 `;
 
-const AddBookLayout = ({ children }) => {
-	return (
-		<LayoutWrapper>
-			<h3>Add book - New book</h3>
-			<PageWrapper>
-				{children}
-			</PageWrapper>
-		</LayoutWrapper>
-	);
-};
+const AddBookLayout = ({ children }) => (
+	<Fragment>
+		<SmallHeader>Add book - New book</SmallHeader>
+		<PageWrapper>
+			{children}
+		</PageWrapper>
+	</Fragment>
+);
 
 AddBookLayout.propTypes = {
 	children: PropTypes.node.isRequired,
