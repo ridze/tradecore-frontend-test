@@ -104,9 +104,10 @@ class Genres extends PureComponent {
 						))}
 					</div>
 					<ControlButtons
+						disabledLeft
+						disabledRight={!selectedGenreId}
 						onLeftButtonClick={this.onBackButtonClick}
 						onRightButtonClick={this.onNextButtonClick}
-						disabledRight={!selectedGenreId}
 					/>
 				</ContentWrapper>
 			</Fragment>
