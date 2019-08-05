@@ -9,6 +9,9 @@ import {
 	Col,
 } from 'antd';
 
+// Constants
+import { ADD_BOOK_FORM_KEYS } from '../lib/constants/bookData';
+
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -40,7 +43,6 @@ class AddBookForm extends PureComponent {
 			id,
 			isDescriptionRequired,
 			onFormItemChange,
-			newBook,
 		} = this.props;
 
 		const { getFieldDecorator } = form;
@@ -52,13 +54,12 @@ class AddBookForm extends PureComponent {
 				onSubmit={this.handleSubmit}
 			>
 				<Form.Item label="Book Title">
-					{getFieldDecorator('bookTitle', {
+					{getFieldDecorator('title', {
 						rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
 					})(
 						<Input
 							onChange={event => onFormItemChange(event.target.value, 'title')}
 							placeholder="Book Title"
-							defaultValue={newBook.get('title')}
 						/>
 					)}
 				</Form.Item>
@@ -71,7 +72,6 @@ class AddBookForm extends PureComponent {
 						<Select
 							onChange={value => onFormItemChange(value, 'author')}
 							placeholder="Author"
-							defaultValue={newBook.get('author')}
 						>
 							{authors.map(author => (
 								<Option key={author}>{author}</Option>
@@ -86,7 +86,6 @@ class AddBookForm extends PureComponent {
 						<Input
 							onChange={event => onFormItemChange(event.target.value, 'isbn')}
 							placeholder="ISBN"
-							defaultValue={newBook.get('isbn')}
 						/>
 					)}
 				</Form.Item>
@@ -99,7 +98,6 @@ class AddBookForm extends PureComponent {
 						<Select
 							onChange={value => onFormItemChange(value, 'publisher')}
 							placeholder="Publisher"
-							defaultValue={newBook.get('publisher')}
 						>
 							{publishers.map(publisher => (
 								<Option key={publisher}>{publisher}</Option>
@@ -117,7 +115,6 @@ class AddBookForm extends PureComponent {
 									onChange={event => onFormItemChange(event.target.value, 'datePublished')}
 									type="date"
 									placeholder="Date published"
-									defaultValue={newBook.get('datePublished')}
 								/>
 							)}
 						</Form.Item>
@@ -133,7 +130,6 @@ class AddBookForm extends PureComponent {
 									onChange={event => onFormItemChange(event.target.value, 'numberOfPages')}
 									type="number"
 									placeholder="Number of pages"
-									defaultValue={newBook.get('numberOfPages')}
 								/>
 							)}
 						</Form.Item>
@@ -150,7 +146,6 @@ class AddBookForm extends PureComponent {
 								<Select
 									onChange={value => onFormItemChange(value, 'format')}
 									placeholder="Format"
-									defaultValue={newBook.get('format')}
 								>
 									{formats.map(format => (
 										<Option key={format}>{format}</Option>
@@ -169,7 +164,6 @@ class AddBookForm extends PureComponent {
 								<Input
 									onChange={event => onFormItemChange(event.target.value, 'edition')}
 									placeholder="Edition"
-									defaultValue={newBook.get('edition')}
 								/>
 							)}
 						</Form.Item>
@@ -184,7 +178,6 @@ class AddBookForm extends PureComponent {
 								<Select
 									onChange={value => onFormItemChange(value, 'editionLanguage')}
 									placeholder="Edition language"
-									defaultValue={newBook.get('editionLanguage')}
 								>
 									{languages.map(language => (
 										<Option key={language}>{language}</Option>
@@ -202,7 +195,6 @@ class AddBookForm extends PureComponent {
 							autosize
 							onChange={event => onFormItemChange(event.target.value, 'description')}
 							placeholder="Type the description"
-							defaultValue={newBook.get('description')}
 						/>
 					)}
 				</Form.Item>
@@ -211,7 +203,25 @@ class AddBookForm extends PureComponent {
 	}
 }
 
-const WrappedAddBookForm = Form.create({ name: 'addBookForm' })(AddBookForm);
+const WrappedAddBookForm = Form.create({
+	name: 'addBookForm',
+	onFieldsChange(props, changedFields) {
+		const key = Object.keys(changedFields)[0];
+		const value = changedFields[key].value;
+		props.onFormItemChange(value, key);
+	},
+
+	mapPropsToFields(props) {
+		return Object.values(ADD_BOOK_FORM_KEYS).reduce((acc, key) => {
+			acc[key] = Form.createFormField({ value: props.newBook.get(key) });
+			return acc;
+		}, {});
+	},
+
+	onValuesChange(_, values) {
+		console.log(values);
+	},
+})(AddBookForm);
 
 WrappedAddBookForm.propTypes = {
 	isDescriptionRequired: PropTypes.bool.isRequired,

@@ -9,7 +9,7 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 import { selectGenre, selectSubgenre, selectAddNewSubgenre } from '../../data/books/BooksActions';
 
 // Constants
-import { allSteps, STEP_IDS } from '../../lib/constants/addBookSteps';
+import { ALL_STEPS, STEP_IDS } from '../../lib/constants/bookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
@@ -120,7 +120,7 @@ class Subgenres extends PureComponent {
 		return (
 			<div>
 				<StepsIndicator
-					steps={mapIdsToSteps(myStepsIds, allSteps)}
+					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
 					activeStepIndex={1}
 				/>
 				{selectedGenreIndex !== -1 && (

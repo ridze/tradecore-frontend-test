@@ -22,6 +22,20 @@ export function selectAddNewSubgenre(dispatch) {
 	dispatch({ type: BOOKS_TYPES.SELECT_ADD_NEW_SUBGENRE });
 }
 
+export function setNewSubgenreData(dispatch, key, value) {
+	dispatch({
+		type: BOOKS_TYPES.SET_NEW_SUBGENRE_DATA,
+		payload: {
+			key,
+			value,
+		}
+	});
+}
+
+export function resetNewSubgenreData(dispatch) {
+	dispatch({ type: BOOKS_TYPES.RESET_NEW_SUBGENRE_DATA });
+}
+
 export function addSubgenre(dispatch, selectedGenreIndex, name, isDescriptionRequired, id) {
 	dispatch({
 		type: BOOKS_TYPES.ADD_SUBGENRE,

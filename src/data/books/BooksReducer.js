@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import BOOKS_TYPES from './BooksTypes';
 
 const initialState = fromJS({
@@ -8,6 +8,10 @@ const initialState = fromJS({
 	selectedGenreId: null,
 	selectedSubgenreId: null,
 	isAddNewSubgenreSelected: false,
+	newSubgenre: {
+		name: '',
+		isDescriptionRequired: false,
+	},
 	newBook: {
 		title: '',
 		author: '',
@@ -47,6 +51,16 @@ export default function booksReducer(state = initialState, action) {
 			.set('isAddNewSubgenreSelected', true)
 			.set('selectedSubgenreId', null);
 	}
+	case BOOKS_TYPES.SET_NEW_SUBGENRE_DATA: {
+		const {
+			key,
+			value,
+		} = action.payload;
+		return state.setIn(['newSubgenre', key], value);
+	}
+	case BOOKS_TYPES.RESET_NEW_SUBGENRE_DATA: {
+		return state.set('newSubgenre', initialState.get('newSubgenre'));
+	}
 	case BOOKS_TYPES.ADD_SUBGENRE: {
 		const {
 			selectedGenreIndex,
@@ -77,7 +91,7 @@ export default function booksReducer(state = initialState, action) {
 			book,
 		} = action.payload;
 		return state.updateIn(['data', 'genres', selectedGenreIndex, 'subgenres', selectedSubgenreIndex], (subgenre) => {
-			return subgenre.get('books') ? subgenre.update('books', books => books.push(fromJS(book))) : subgenre.set('books', fromJS([book]));
+			return subgenre.get('books') ? subgenre.update('books', books => books.push(book)) : subgenre.set('books', List([book]));
 		});
 	}
 	default: {

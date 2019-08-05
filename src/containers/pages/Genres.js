@@ -9,9 +9,9 @@ import { selectGenre } from '../../data/books/BooksActions';
 
 // Constants
 import {
-	allSteps,
+	ALL_STEPS,
 	STEP_IDS,
-} from '../../lib/constants/addBookSteps';
+} from '../../lib/constants/bookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
@@ -89,7 +89,7 @@ class Genres extends PureComponent {
 		return (
 			<div>
 				<StepsIndicator
-					steps={mapIdsToSteps(myStepsIds, allSteps)}
+					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
 					activeStepIndex={0}
 				/>
 				<ContentWrapper>

@@ -3,26 +3,27 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import customBindActionCreators from '../../lib/customBindActionCreators';
-import * as Antd from 'antd';
 
 // Actions
-import { selectGenre, selectAddNewSubgenre, addSubgenre } from '../../data/books/BooksActions';
+import {
+	selectGenre, selectAddNewSubgenre, setNewSubgenreData, addSubgenre,
+} from '../../data/books/BooksActions';
 
 // Constants
-import { allSteps, STEP_IDS } from '../../lib/constants/addBookSteps';
+import { ALL_STEPS, STEP_IDS } from '../../lib/constants/bookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import ControlButtons from '../../components/ControlButtons';
 import { ContentWrapper, CheckboxWrapper } from '../../components/Wrappers';
 
+// Ant design components
+import { Input, Checkbox, message } from 'antd';
+
 // Helpers
 import { mapIdsToSteps } from '../../lib/helpers';
 
 const myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION];
-
-// Antd components
-const { Input, Checkbox, message } = Antd;
 
 class AddSubgenre extends PureComponent {
 	constructor(props) {
@@ -30,7 +31,7 @@ class AddSubgenre extends PureComponent {
 		this.state = {
 			initialized: false,
 			error: false,
-			selectedGenreIndex: -1,
+			selectedGenreIndex: null,
 			name: '',
 			isDescriptionRequired: false,
 		};
@@ -75,13 +76,13 @@ class AddSubgenre extends PureComponent {
 	onNextButtonClick = () => {
 		const {
 			selectedGenreIndex,
-			name,
-			isDescriptionRequired,
 		} = this.state;
 		const {
 			history,
 			addSubgenre,
 			selectedGenreId,
+			name,
+			isDescriptionRequired,
 		} = this.props;
 
 		const id = Math.random() * Math.pow(10, 16);
@@ -90,38 +91,41 @@ class AddSubgenre extends PureComponent {
 		history.push(`/genres/${selectedGenreId}/${id}/add-book`);
 	};
 
-	handleNameChange = (event) => {
-		const { value } = event.target;
-		this.setState({ name: value });
-	};
-
-	handleIsDescRequiredChange = (event) => {
-		const { checked } = event.target;
-		this.setState({ isDescriptionRequired: checked });
+	handleFieldChange = (key, value) => {
+		const {
+			setNewSubgenreData
+		} = this.props;
+		setNewSubgenreData(key, value);
 	};
 
 	render() {
 		const {
 			initialized,
+		} = this.state;
+
+		const {
 			name,
 			isDescriptionRequired,
-		} = this.state;
+		} = this.props;
 
 		return (
 			<div>
 				<StepsIndicator
-					steps={mapIdsToSteps(myStepsIds, allSteps)}
+					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
 					activeStepIndex={2}
 				/>
 				{initialized && (
 					<ContentWrapper>
 						<Input
 							value={name}
-							onChange={this.handleNameChange}
+							onChange={event => this.handleFieldChange('name', event.target.value)}
 							placeholder="Subgenre name"
 						/>
 						<CheckboxWrapper>
-							<Checkbox checked={isDescriptionRequired} onChange={this.handleIsDescRequiredChange}>
+							<Checkbox
+								checked={isDescriptionRequired}
+								onChange={event => this.handleFieldChange('isDescriptionRequired', event.target.checked)}
+							>
 								Description is required for this subgenre
 							</Checkbox>
 						</CheckboxWrapper>
@@ -140,9 +144,13 @@ class AddSubgenre extends PureComponent {
 AddSubgenre.propTypes = {
 	selectGenre: PropTypes.func.isRequired,
 	selectAddNewSubgenre: PropTypes.func.isRequired,
+	setNewSubgenreData: PropTypes.func.isRequired,
+	addSubgenre: PropTypes.func.isRequired,
 	selectedGenreId: PropTypes.number,
 	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,
+	name: PropTypes.string.isRequired,
+	isDescriptionRequired: PropTypes.bool.isRequired,
 };
 
 AddSubgenre.defaultProps = {
@@ -157,6 +165,8 @@ function mapStateToProps(state) {
 		selectedGenreId: state.getIn(['books', 'selectedGenreId']),
 		selectedSubgenreId: state.getIn(['books', 'selectedSubgenreId']),
 		isAddNewSubgenreSelected: state.getIn(['books', 'isAddNewSubgenreSelected']),
+		name: state.getIn(['books', 'newSubgenre', 'name']),
+		isDescriptionRequired: state.getIn(['books', 'newSubgenre', 'isDescriptionRequired']),
 	};
 }
 
@@ -164,6 +174,7 @@ function mapDispatchToProps(dispatch) {
 	return customBindActionCreators({
 		selectGenre,
 		selectAddNewSubgenre,
+		setNewSubgenreData,
 		addSubgenre,
 	}, dispatch);
 }

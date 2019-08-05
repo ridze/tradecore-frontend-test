@@ -12,13 +12,13 @@ import {
 } from '../../data/books/BooksActions';
 
 // Constants
-import { allSteps, STEP_IDS } from '../../lib/constants/addBookSteps';
+import { ALL_STEPS, STEP_IDS } from '../../lib/constants/bookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
+import AddBookForm from '../../components/AddBookForm';
 import ControlButtons from '../../components/ControlButtons';
 import { ContentWrapper } from '../../components/Wrappers';
-import AddBookForm from '../../components/AddBookForm';
 
 // Helpers
 import { mapIdsToSteps } from '../../lib/helpers';
@@ -37,6 +37,8 @@ class BookInformation extends PureComponent {
 			initialized: false,
 			error: null,
 			isDescriptionRequired: false,
+			selectedGenreIndex: null,
+			selectedSubgenreIndex: null,
 		};
 	}
 
@@ -85,8 +87,11 @@ class BookInformation extends PureComponent {
 			this.setState({
 				initialized: true,
 				isDescriptionRequired,
+				selectedGenreIndex,
+				selectedSubgenreIndex,
 			});
 
+			// Create item validator depending on is description required
 			this.formItemValidator = (() => {
 				const baseValidator = value => !!value;
 				return isDescriptionRequired ? baseValidator : (value, key) => {
@@ -121,10 +126,15 @@ class BookInformation extends PureComponent {
 
 	addNewBook = () => {
 		const {
+			selectedGenreIndex,
+			selectedSubgenreIndex,
+		} = this.state;
+		const {
 			addBook,
 			newBook,
 		} = this.props;
-		addBook(newBook);
+
+		addBook(selectedGenreIndex, selectedSubgenreIndex, newBook);
 	};
 
 	isFormValid = () => {
@@ -135,7 +145,7 @@ class BookInformation extends PureComponent {
 		return keys.reduce((acc, key, index) => {
 			if (!this.formItemValidator(newBook.get(key), key)) {
 				acc = false;
-				keys.splice(0, index + 1);
+				keys.splice(0, index + 1); // exit loop
 			}
 			return acc;
 		}, true);
@@ -155,7 +165,7 @@ class BookInformation extends PureComponent {
 		return (
 			<div>
 				<StepsIndicator
-					steps={mapIdsToSteps(this.myStepsIds, allSteps)}
+					steps={mapIdsToSteps(this.myStepsIds, ALL_STEPS)}
 					activeStepIndex={this.activeStepIndex}
 				/>
 				{initialized && !error && (

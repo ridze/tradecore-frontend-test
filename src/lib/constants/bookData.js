@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const allSteps = {
+export const ALL_STEPS = {
 	genre: {
 		title: 'Genre',
 	},
@@ -15,7 +15,6 @@ export const allSteps = {
 	},
 	pending: {
 		title: '...',
-		icon: (<span>...</span>),
 	},
 };
 
@@ -27,9 +26,15 @@ export const STEP_IDS = {
 	PENDING: 'pending',
 };
 
-export const STEP_STATUSES = {
-	PROCESS: 'process',
-	WAIT: 'wait',
-	FINISH: 'finish',
-	ERROR: 'error',
+export const ADD_BOOK_FORM_KEYS = {
+	TITLE: 'title',
+	AUTHOR: 'author',
+	ISBN: 'isbn',
+	PUBLISHER: 'publisher',
+	DATE_PUBLISHED: 'datePublished',
+	NUMBER_OF_PAGES: 'numberOfPages',
+	FORMAT: 'format',
+	EDITION: 'edition',
+	EDITION_LANGUAGE: 'editionLanguage',
+	DESCRIPTION: 'description',
 };
