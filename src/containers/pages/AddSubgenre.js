@@ -7,7 +7,7 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 
 // Actions
 import {
-	selectGenre, selectAddNewSubgenre, setNewSubgenreData, addSubgenre,
+	selectGenre, selectAddNewSubgenre, setNewSubgenreData, resetNewSubgenreData, addSubgenre,
 } from '../../data/books/BooksActions';
 
 // Constants
@@ -22,7 +22,7 @@ import { ContentWrapper } from '../../components/Wrappers';
 import { Input, Checkbox, message } from 'antd';
 
 // Helpers
-import { mapIdsToSteps } from '../../lib/helpers';
+import { mapIdsToSteps, subgenreAlreadyExists } from '../../lib/helpers';
 
 // Page Specific
 const CheckboxWrapper = styled.div`
@@ -85,15 +85,25 @@ class AddSubgenre extends PureComponent {
 		} = this.state;
 		const {
 			history,
+			resetNewSubgenreData,
 			addSubgenre,
 			selectedGenreId,
+			genres,
 			name,
 			isDescriptionRequired,
 		} = this.props;
 
-		const id = Math.random() * Math.pow(10, 16);
+		// If subgenre exists return it, clear new subgenre data from redux, redirect to add book page with existing subgenry id
+		const existingSubgenry = subgenreAlreadyExists(genres.getIn([selectedGenreIndex, 'subgenres']), name);
+		const id = existingSubgenry ? existingSubgenry.get('id') : Math.random() * Math.pow(10, 16);
 
-		addSubgenre(selectedGenreIndex, name, isDescriptionRequired, id);
+		if (existingSubgenry) {
+			resetNewSubgenreData();
+			message.info('Subgenre existed already.', 5);
+		} else {
+			addSubgenre(selectedGenreIndex, name, isDescriptionRequired, id);
+			message.success('Added subgenre successfully.');
+		}
 		history.push(`/genres/${selectedGenreId}/${id}/add-book`);
 	};
 
@@ -181,6 +191,7 @@ function mapDispatchToProps(dispatch) {
 		selectGenre,
 		selectAddNewSubgenre,
 		setNewSubgenreData,
+		resetNewSubgenreData,
 		addSubgenre,
 	}, dispatch);
 }

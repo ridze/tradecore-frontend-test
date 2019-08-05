@@ -14,6 +14,9 @@ const Overlay = styled.div`
 	width: ${`${window.innerWidth}px`};
 	height: ${`${window.innerHeight}px`};
 	z-index: 100;
+	left: 0;
+    top: 0;
+    background: white;
 `;
 
 const GreatIcon = styled(Icon)`

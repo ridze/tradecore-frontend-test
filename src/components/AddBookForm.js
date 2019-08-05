@@ -207,8 +207,10 @@ const WrappedAddBookForm = Form.create({
 	name: 'addBookForm',
 	onFieldsChange(props, changedFields) {
 		const key = Object.keys(changedFields)[0];
-		const value = changedFields[key].value;
-		props.onFormItemChange(value, key);
+		if (key) {
+			const value = changedFields[key].value;
+			return value !== props.newBook.get(key) ? props.onFormItemChange(value, key) : false;
+		}
 	},
 
 	mapPropsToFields(props) {

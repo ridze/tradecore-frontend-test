@@ -12,7 +12,7 @@ import {
 } from '../../data/books/BooksActions';
 
 // Constants
-import { ALL_STEPS, STEP_IDS } from '../../lib/constants/BookData';
+import { ALL_STEPS, STEP_IDS, ADD_BOOK_FORM_KEYS } from '../../lib/constants/BookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
@@ -22,7 +22,7 @@ import BookAddedSuccessfully from '../../components/BookAddedSuccessfully';
 import { ContentWrapper } from '../../components/Wrappers';
 
 // Helpers
-import { mapIdsToSteps } from '../../lib/helpers';
+import { mapIdsToSteps, bookAlreadyExists } from '../../lib/helpers';
 
 class BookInformation extends PureComponent {
 	constructor(props) {
@@ -36,7 +36,7 @@ class BookInformation extends PureComponent {
 		this.state = {
 			initialized: false,
 			isDescriptionRequired: false,
-			selectedGenreIndex: null,
+			selectedGenreIndex: -1,
 			selectedSubgenreIndex: null,
 		};
 	}
@@ -93,7 +93,7 @@ class BookInformation extends PureComponent {
 			this.formItemValidator = (() => {
 				const baseValidator = value => !!value;
 				return isDescriptionRequired ? baseValidator : (value, key) => {
-					return key === 'description' ? true : baseValidator(value);
+					return key === ADD_BOOK_FORM_KEYS.DESCRIPTION ? true : baseValidator(value);
 				};
 			})();
 
@@ -128,10 +128,15 @@ class BookInformation extends PureComponent {
 			selectedSubgenreIndex,
 		} = this.state;
 		const {
-			addBook,
+			genres,
 			newBook,
+			addBook,
 		} = this.props;
 
+		const books = genres.getIn([selectedGenreIndex, 'subgenres', selectedSubgenreIndex, 'books']);
+		if (bookAlreadyExists(books, newBook)) {
+			return message.info('Book with same title and by same author already exists.', 5);
+		}
 		addBook(selectedGenreIndex, selectedSubgenreIndex, newBook);
 	};
 
@@ -168,7 +173,7 @@ class BookInformation extends PureComponent {
 			removeBookAddedFlag,
 		} = this.props;
 
-		if (bookAddedSuccessfully) {
+		if (bookAddedSuccessfully || true) {
 			return (
 				<BookAddedSuccessfully
 					onUnmount={removeBookAddedFlag}
