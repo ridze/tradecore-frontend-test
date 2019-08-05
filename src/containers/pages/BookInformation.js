@@ -37,7 +37,7 @@ class BookInformation extends PureComponent {
 			initialized: false,
 			isDescriptionRequired: false,
 			selectedGenreIndex: -1,
-			selectedSubgenreIndex: null,
+			selectedSubgenreIndex: -1,
 		};
 	}
 
