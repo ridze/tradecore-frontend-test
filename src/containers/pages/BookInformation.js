@@ -173,7 +173,7 @@ class BookInformation extends PureComponent {
 			removeBookAddedFlag,
 		} = this.props;
 
-		if (bookAddedSuccessfully || true) {
+		if (bookAddedSuccessfully) {
 			return (
 				<BookAddedSuccessfully
 					onUnmount={removeBookAddedFlag}
