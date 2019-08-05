@@ -29,7 +29,7 @@ export function setNewSubgenreData(dispatch, key, value) {
 		payload: {
 			key,
 			value,
-		}
+		},
 	});
 }
 
@@ -61,7 +61,7 @@ export function setNewBookData(dispatch, key, value) {
 
 export function addBook(dispatch, selectedGenreIndex, selectedSubgenreIndex, book) {
 	dispatch({
-		type: BOOKS_TYPES.ADD_BOOK,
+		type: BOOKS_TYPES.ADD_BOOK_ASYNC,
 		payload: {
 			selectedGenreIndex,
 			selectedSubgenreIndex,

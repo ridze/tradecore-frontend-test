@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Ant design components
 import { Spin } from 'antd';
@@ -6,12 +7,18 @@ import { Spin } from 'antd';
 // Components
 import { CenteredWrapper } from './Wrappers';
 
-const CenteredSpinner = () => {
-	return (
-		<CenteredWrapper>
-			<Spin size="large" tip="Your Library is being loaded" />
-		</CenteredWrapper>
-	);
+const CenteredSpinner = ({ tip }) => (
+	<CenteredWrapper>
+		<Spin size="large" tip={tip} />
+	</CenteredWrapper>
+);
+
+CenteredSpinner.propTypes = {
+	tip: PropTypes.string,
+};
+
+CenteredSpinner.defaultProps = {
+	tip: '',
 };
 
 export default CenteredSpinner;

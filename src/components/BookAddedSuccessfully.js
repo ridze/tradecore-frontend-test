@@ -6,19 +6,10 @@ import PropTypes from 'prop-types';
 import { Icon, Button } from 'antd';
 
 // Components
+import { BaseOverlay } from './Overlays';
 import { CenteredWrapper } from './Wrappers';
 
 // Component Specific
-const Overlay = styled.div`
-	position: fixed;
-	width: ${`${window.innerWidth}px`};
-	height: ${`${window.innerHeight}px`};
-	z-index: 100;
-	left: 0;
-    top: 0;
-    background: white;
-`;
-
 const GreatIcon = styled(Icon)`
 	svg {
 		width: 150px;
@@ -49,9 +40,9 @@ class BookAddedSuccessfully extends PureComponent {
 		} = this.props;
 
 		return (
-			<Overlay>
+			<BaseOverlay>
 				<CenteredWrapper>
-					<GreatIcon type="check"/>
+					<GreatIcon type="check" />
 					<GreyCaption>Book Added Successfully!</GreyCaption>
 					<MyButton
 						onClick={onAddAnotherBook}
@@ -61,7 +52,7 @@ class BookAddedSuccessfully extends PureComponent {
 						Add another book
 					</MyButton>
 				</CenteredWrapper>
-			</Overlay>
+			</BaseOverlay>
 		);
 	}
 };

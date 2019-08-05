@@ -10,9 +10,6 @@ import {
 	selectGenre, selectAddNewSubgenre, setNewSubgenreData, resetNewSubgenreData, addSubgenre,
 } from '../../data/books/BooksActions';
 
-// Constants
-import { ALL_STEPS, STEP_IDS } from '../../lib/constants/BookData';
-
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import ControlButtons from '../../components/ControlButtons';
@@ -22,14 +19,12 @@ import { ContentWrapper } from '../../components/Wrappers';
 import { Input, Checkbox, message } from 'antd';
 
 // Helpers
-import { mapIdsToSteps, subgenreAlreadyExists } from '../../lib/helpers';
+import { subgenreAlreadyExists, determineCurrentSteps } from '../../lib/helpers';
 
 // Page Specific
 const CheckboxWrapper = styled.div`
 	padding: 20px 0px 10px 0px;
 `;
-
-const myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION];
 
 class AddSubgenre extends PureComponent {
 	constructor(props) {
@@ -118,13 +113,15 @@ class AddSubgenre extends PureComponent {
 
 		const {
 			name,
+			selectedSubgenreId,
+			isAddNewSubgenreSelected,
 			isDescriptionRequired,
 		} = this.props;
 
 		return (
 			<Fragment>
 				<StepsIndicator
-					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
+					steps={determineCurrentSteps(selectedSubgenreId, isAddNewSubgenreSelected)}
 					activeStepIndex={2}
 				/>
 				{initialized && (

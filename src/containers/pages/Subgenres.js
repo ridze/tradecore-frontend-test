@@ -8,9 +8,6 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 // Actions
 import { selectGenre, selectSubgenre, selectAddNewSubgenre } from '../../data/books/BooksActions';
 
-// Constants
-import { ALL_STEPS, STEP_IDS } from '../../lib/constants/BookData';
-
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import ItemButton from '../../components/ItemButton';
@@ -18,7 +15,7 @@ import ControlButtons from '../../components/ControlButtons';
 import { ContentWrapper } from '../../components/Wrappers';
 
 // Helpers
-import { mapIdsToSteps } from '../../lib/helpers';
+import { determineCurrentSteps } from '../../lib/helpers';
 
 // Antd components
 const { message } = Antd;
@@ -26,25 +23,7 @@ const { message } = Antd;
 class Subgenres extends PureComponent {
 	constructor(props) {
 		super(props);
-
-		const {
-			isAddNewSubgenreSelected,
-			selectedSubgenreId,
-		} = props;
-
-		let dependentStepsIds = [STEP_IDS.PENDING];
-		const myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE];
-
-		if (isAddNewSubgenreSelected) {
-			dependentStepsIds = [STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION];
-		} else if (selectedSubgenreId) {
-			dependentStepsIds = [STEP_IDS.INFORMATION];
-		}
-
-		myStepsIds.push(...dependentStepsIds);
-
 		this.state = {
-			myStepsIds,
 			selectedGenreIndex: -1,
 		};
 	}
@@ -74,18 +53,6 @@ class Subgenres extends PureComponent {
 		}
 	}
 
-	componentDidUpdate(prevProps) {
-		const {
-			selectedSubgenreId,
-			isAddNewSubgenreSelected,
-		} = this.props;
-		if (selectedSubgenreId && selectedSubgenreId !== prevProps.selectedSubgenreId) {
-			this.setState({ myStepsIds: [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.INFORMATION] });
-		} else if (isAddNewSubgenreSelected && isAddNewSubgenreSelected !== prevProps.isAddNewSubgenreSelected) {
-			this.setState({ myStepsIds: [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION] });
-		}
-	}
-
 	onBackButtonClick = () => {
 		const {
 			history,
@@ -106,7 +73,6 @@ class Subgenres extends PureComponent {
 
 	render() {
 		const {
-			myStepsIds,
 			selectedGenreIndex,
 		} = this.state;
 		const {
@@ -120,7 +86,7 @@ class Subgenres extends PureComponent {
 		return (
 			<Fragment>
 				<StepsIndicator
-					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
+					steps={determineCurrentSteps(selectedSubgenreId, isAddNewSubgenreSelected)}
 					activeStepIndex={1}
 				/>
 				{selectedGenreIndex !== -1 && (
@@ -153,6 +119,9 @@ class Subgenres extends PureComponent {
 }
 
 Subgenres.propTypes = {
+	match: PropTypes.shape({}).isRequired,
+	history: PropTypes.shape({}).isRequired,
+	genres: PropTypes.shape({}).isRequired,
 	selectedGenreId: PropTypes.number,
 	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,

@@ -1,25 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as Antd from 'antd';
-
-const {
-	Steps,
-} = Antd;
+import { Steps } from 'antd';
 
 const {
 	Step,
 } = Steps;
 
-const StepsIndicator = ({ steps, activeStepIndex }) => {
-	return (
-		<Steps
-			labelPlacement="vertical"
-			current={activeStepIndex}
-		>
-			{steps.map(step => (<Step title={step.title} key={step.id} />))}
-		</Steps>
-	);
-};
+const StepsIndicator = ({ steps, activeStepIndex }) => (
+	<Steps
+		labelPlacement="vertical"
+		current={activeStepIndex}
+	>
+		{steps.map(step => (<Step title={step.title} key={step.id} />))}
+	</Steps>
+);
 
 StepsIndicator.propTypes = {
 	activeStepIndex: PropTypes.number.isRequired,

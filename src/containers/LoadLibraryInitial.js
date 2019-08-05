@@ -23,7 +23,7 @@ class LoadLibraryInitial extends PureComponent {
 			children,
 		} = this.props;
 		if (!initialized) {
-			return <CenteredSpinner />;
+			return <CenteredSpinner tip="Your Library is being loaded." />;
 		}
 		return children;
 	}

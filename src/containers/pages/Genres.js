@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -7,12 +7,6 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 // Actions
 import { selectGenre } from '../../data/books/BooksActions';
 
-// Constants
-import {
-	ALL_STEPS,
-	STEP_IDS,
-} from '../../lib/constants/BookData';
-
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import ItemButton from '../../components/ItemButton';
@@ -20,94 +14,55 @@ import ControlButtons from '../../components/ControlButtons';
 import { ContentWrapper } from '../../components/Wrappers';
 
 // Helpers
-import { mapIdsToSteps } from '../../lib/helpers';
+import { determineCurrentSteps } from '../../lib/helpers';
 
-class Genres extends PureComponent {
-	constructor(props) {
-		super(props);
-
-		const {
-			isAddNewSubgenreSelected,
-			selectedSubgenreId,
-		} = props;
-
-		let dependentStepsIds = [STEP_IDS.PENDING];
-		const myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE];
-
-		if (isAddNewSubgenreSelected) {
-			dependentStepsIds = [STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION];
-		} else if (selectedSubgenreId) {
-			dependentStepsIds = [STEP_IDS.INFORMATION];
-		}
-
-		myStepsIds.push(...dependentStepsIds);
-
-		this.state = { myStepsIds };
-	}
-
-	componentDidUpdate(prevProps) {
-		const {
-			selectedGenreId,
-			selectedSubgenreId,
-			isAddNewSubgenreSelected,
-		} = this.props;
-		if (selectedSubgenreId && selectedSubgenreId !== prevProps.selectedSubgenreId) {
-			this.setState({ myStepsIds: [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.INFORMATION] });
-		} else if (isAddNewSubgenreSelected && isAddNewSubgenreSelected !== prevProps.isAddNewSubgenreSelected) {
-			this.setState({ myStepsIds: [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION] });
-		} else if (selectedGenreId !== prevProps.selectedGenreId) {
-			this.setState({ myStepsIds: [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.PENDING] })
-		}
-	}
-
-	onNextButtonClick = () => {
+const Genres = (props) => {
+	const onNextButtonClick = () => {
 		const {
 			history,
 			selectedGenreId,
-		} = this.props;
+		} = props;
 		history.push(`/genres/${selectedGenreId}/subgenres`);
 	};
 
-	render() {
-		const {
-			myStepsIds,
-		} = this.state;
+	const {
+		genres,
+		selectedGenreId,
+		selectedSubgenreId,
+		isAddNewSubgenreSelected,
+		selectGenre,
+	} = props;
 
-		const {
-			genres,
-			selectedGenreId,
-			selectGenre,
-		} = this.props;
-
-		return (
-			<Fragment>
-				<StepsIndicator
-					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
-					activeStepIndex={0}
+	return (
+		<Fragment>
+			<StepsIndicator
+				steps={determineCurrentSteps(selectedSubgenreId, isAddNewSubgenreSelected)}
+				activeStepIndex={0}
+			/>
+			<ContentWrapper>
+				<div>
+					{genres.map(genre => (
+						<ItemButton
+							name={genre.get('name')}
+							selected={selectedGenreId === genre.get('id')}
+							onClick={() => selectGenre(genre.get('id'))}
+							key={`${genre.get('id')}-${genre.get('name')}`}
+						/>
+					))}
+				</div>
+				<ControlButtons
+					disabledLeft
+					disabledRight={!selectedGenreId}
+					onRightButtonClick={onNextButtonClick}
 				/>
-				<ContentWrapper>
-					<div>
-						{genres.map(genre => (
-							<ItemButton
-								name={genre.get('name')}
-								selected={selectedGenreId === genre.get('id')}
-								onClick={() => selectGenre(genre.get('id'))}
-								key={`${genre.get('id')}-${genre.get('name')}`}
-							/>
-						))}
-					</div>
-					<ControlButtons
-						disabledLeft
-						disabledRight={!selectedGenreId}
-						onRightButtonClick={this.onNextButtonClick}
-					/>
-				</ContentWrapper>
-			</Fragment>
-		);
-	}
-}
+			</ContentWrapper>
+		</Fragment>
+	);
+};
 
 Genres.propTypes = {
+	history: PropTypes.shape({}).isRequired,
+	genres: PropTypes.shape({}).isRequired,
 	selectedGenreId: PropTypes.number,
 	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,

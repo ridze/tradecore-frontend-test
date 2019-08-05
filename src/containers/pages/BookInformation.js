@@ -12,27 +12,22 @@ import {
 } from '../../data/books/BooksActions';
 
 // Constants
-import { ALL_STEPS, STEP_IDS, ADD_BOOK_FORM_KEYS } from '../../lib/constants/BookData';
+import { ADD_BOOK_FORM_KEYS } from '../../lib/constants/BookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import AddBookForm from '../../components/AddBookForm';
 import ControlButtons from '../../components/ControlButtons';
+import AddingBookSpinner from '../../components/AddingBookSpinner';
 import BookAddedSuccessfully from '../../components/BookAddedSuccessfully';
 import { ContentWrapper } from '../../components/Wrappers';
 
 // Helpers
-import { mapIdsToSteps, bookAlreadyExists } from '../../lib/helpers';
+import { bookAlreadyExists, determineCurrentSteps } from '../../lib/helpers';
 
 class BookInformation extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { isAddNewSubgenreSelected } = props;
-		this.myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE];
-		const dependentStepsIds = isAddNewSubgenreSelected ? [STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION] : [STEP_IDS.INFORMATION];
-		this.myStepsIds.push(...dependentStepsIds);
-		this.activeStepIndex = isAddNewSubgenreSelected ? 3 : 2;
-
 		this.state = {
 			initialized: false,
 			isDescriptionRequired: false,
@@ -49,6 +44,7 @@ class BookInformation extends PureComponent {
 			selectGenre,
 			selectSubgenre,
 			selectedGenreId,
+			selectedSubgenreId,
 			isAddNewSubgenreSelected,
 		} = this.props;
 		const {
@@ -64,7 +60,10 @@ class BookInformation extends PureComponent {
 			message.error('Requested genre does not exist, please, select from existing ones.', 5);
 			history.push('/genres');
 			return;
-		} else if (selectedGenreIndex !== -1 && selectedGenreId !== Number(genreId)) { // If does and it is not yet selected (user refreshes, clicks link) select it
+		}
+
+		// If does exist and it is not yet selected (user refreshes, clicks link) select it
+		if (selectedGenreIndex !== -1 && selectedGenreId !== Number(genreId)) {
 			selectGenre(Number(genreId));
 		}
 
@@ -97,8 +96,9 @@ class BookInformation extends PureComponent {
 				};
 			})();
 
-			// check if subgenre wasn't added immediately before this page, in that case just keep Add New Subgenre button selected
-			if (!isAddNewSubgenreSelected) {
+			// check if selectedSubgenreId is marked in redux (has page just loaded)
+			// also check if subgenre wasn't added immediately before this page, in that case just keep Add New Subgenre button selected
+			if (selectedSubgenreId !== Number(subgenreId) && !isAddNewSubgenreSelected) {
 				selectSubgenre(Number(subgenreId));
 			}
 		}
@@ -111,7 +111,7 @@ class BookInformation extends PureComponent {
 			isAddNewSubgenreSelected,
 		} = this.props;
 		const path = isAddNewSubgenreSelected ?
-			`/genres/${selectedGenreId}/subgenres/add-subgenre`: `/genres/${selectedGenreId}/subgenres/`;
+			`/genres/${selectedGenreId}/subgenres/add-subgenre` : `/genres/${selectedGenreId}/subgenres/`;
 		history.push(path);
 	};
 
@@ -137,7 +137,7 @@ class BookInformation extends PureComponent {
 		if (bookAlreadyExists(books, newBook)) {
 			return message.info('Book with same title and by same author already exists.', 5);
 		}
-		addBook(selectedGenreIndex, selectedSubgenreIndex, newBook);
+		return addBook(selectedGenreIndex, selectedSubgenreIndex, newBook);
 	};
 
 	isFormValid = () => {
@@ -168,7 +168,10 @@ class BookInformation extends PureComponent {
 		} = this.state;
 
 		const {
+			selectedSubgenreId,
+			isAddNewSubgenreSelected,
 			newBook,
+			addingBookAsync,
 			bookAddedSuccessfully,
 			removeBookAddedFlag,
 		} = this.props;
@@ -182,11 +185,12 @@ class BookInformation extends PureComponent {
 			);
 		}
 
+		// console.log(selectSubgenreId);
 		return (
 			<Fragment>
 				<StepsIndicator
-					steps={mapIdsToSteps(this.myStepsIds, ALL_STEPS)}
-					activeStepIndex={this.activeStepIndex}
+					steps={determineCurrentSteps(selectedSubgenreId, isAddNewSubgenreSelected)}
+					activeStepIndex={isAddNewSubgenreSelected ? 3 : 2}
 				/>
 				{initialized && (
 					<ContentWrapper>
@@ -202,8 +206,9 @@ class BookInformation extends PureComponent {
 							onLeftButtonClick={this.onBackButtonClick}
 							onRightButtonClick={() => {}}
 							rightButtonText="Add"
-							disabledRight={!this.isFormValid()}
+							disabledRight={addingBookAsync || !this.isFormValid()}
 						/>
+						{addingBookAsync && (<AddingBookSpinner />)}
 					</ContentWrapper>
 				)}
 			</Fragment>
@@ -212,16 +217,24 @@ class BookInformation extends PureComponent {
 }
 
 BookInformation.propTypes = {
+	match: PropTypes.shape({}).isRequired,
+	history: PropTypes.shape({}).isRequired,
+	genres: PropTypes.shape({}).isRequired,
+	newBook: PropTypes.shape({}).isRequired,
 	selectGenre: PropTypes.func.isRequired,
 	selectSubgenre: PropTypes.func.isRequired,
+	setNewBookData: PropTypes.func.isRequired,
 	removeBookAddedFlag: PropTypes.func.isRequired,
 	selectedGenreId: PropTypes.number,
+	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,
+	addingBookAsync: PropTypes.bool.isRequired,
 	bookAddedSuccessfully: PropTypes.bool,
 };
 
 BookInformation.defaultProps = {
 	selectedGenreId: null,
+	selectedSubgenreId: null,
 	isAddNewSubgenreSelected: false,
 	bookAddedSuccessfully: null,
 };
@@ -230,8 +243,10 @@ function mapStateToProps(state) {
 	return {
 		genres: state.getIn(['books', 'data', 'genres']),
 		selectedGenreId: state.getIn(['books', 'selectedGenreId']),
+		selectedSubgenreId: state.getIn(['books', 'selectedSubgenreId']),
 		isAddNewSubgenreSelected: state.getIn(['books', 'isAddNewSubgenreSelected']),
 		newBook: state.getIn(['books', 'newBook']),
+		addingBookAsync: state.getIn(['books', 'addingBookAsync']),
 		bookAddedSuccessfully: state.getIn(['books', 'bookAddedSuccessfully']),
 	};
 }

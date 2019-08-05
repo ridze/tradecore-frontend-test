@@ -24,6 +24,7 @@ const initialState = fromJS({
 		editionLanguage: '',
 		description: '',
 	},
+	addingBookAsync: false,
 	bookAddedSuccessfully: null,
 });
 
@@ -87,6 +88,14 @@ export default function booksReducer(state = initialState, action) {
 		} = action.payload;
 		return state.setIn(['newBook', key], value);
 	}
+	case BOOKS_TYPES.ADD_BOOK_ASYNC: {
+		return state.set('addingBookAsync', true);
+	}
+	case BOOKS_TYPES.ADD_BOOK_FAIL: {
+		return state
+			.set('error', action.payload)
+			.set('addingBookAsync', false);
+	}
 	case BOOKS_TYPES.ADD_BOOK: {
 		const {
 			selectedGenreIndex,
@@ -102,6 +111,7 @@ export default function booksReducer(state = initialState, action) {
 			.set('selectedGenreId', null)
 			.set('selectedSubgenreId', null)
 			.set('isAddNewSubgenreSelected', false)
+			.set('addingBookAsync', false)
 			.set('bookAddedSuccessfully', true);
 	}
 	case BOOKS_TYPES.REMOVE_BOOK_ADDED_FLAG: {

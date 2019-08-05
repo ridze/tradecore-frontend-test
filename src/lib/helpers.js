@@ -1,3 +1,7 @@
+// Constants
+import { ALL_STEPS, STEP_IDS } from './constants/BookData';
+import ADD_BOOK_PAGES from './constants/Generic';
+
 /**
  * Maps ids of steps to their data
  * @param {array} ids
@@ -35,4 +39,24 @@ export const subgenreAlreadyExists = (subgenres, newSubgenreName) => {
 		return false;
 	}
 	return subgenres.get(newSubgenreIndex);
+};
+
+/**
+ * Determines and returns current steps for <StepsIndicator> component
+ * @param {number} selectedSubgenreId
+ * @param {boolean} isAddNewSubgenreSelected
+ * @returns {Array}
+ */
+export const determineCurrentSteps = (selectedSubgenreId, isAddNewSubgenreSelected) => {
+	const myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE];
+	let dependentStepsIds = [STEP_IDS.PENDING];
+
+	if (isAddNewSubgenreSelected) {
+		dependentStepsIds = [STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION];
+	} else if (selectedSubgenreId) {
+		dependentStepsIds = [STEP_IDS.INFORMATION];
+	}
+
+	myStepsIds.push(...dependentStepsIds);
+	return mapIdsToSteps(myStepsIds, ALL_STEPS);
 };
