@@ -6,11 +6,17 @@ const LayoutWrapper = styled.div`
 	padding: 20px;
 `;
 
+const PageWrapper = styled.div`
+	padding: 50px;
+`;
+
 const AddBookLayout = ({ children }) => {
 	return (
 		<LayoutWrapper>
 			<h3>Add book - New book</h3>
-			{children}
+			<PageWrapper>
+				{children}
+			</PageWrapper>
 		</LayoutWrapper>
 	);
 };

@@ -10,7 +10,7 @@ import {
 } from 'antd';
 
 // Constants
-import { ADD_BOOK_FORM_KEYS } from '../lib/constants/bookData';
+import { ADD_BOOK_FORM_KEYS } from '../lib/constants/BookData';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -55,7 +55,7 @@ class AddBookForm extends PureComponent {
 			>
 				<Form.Item label="Book Title">
 					{getFieldDecorator('title', {
-						rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+						rules: [{ required: true, message: 'Please input book title.', whitespace: true }],
 					})(
 						<Input
 							onChange={event => onFormItemChange(event.target.value, 'title')}
@@ -66,7 +66,7 @@ class AddBookForm extends PureComponent {
 				<Form.Item label="Author">
 					{getFieldDecorator('author', {
 						rules: [
-							{ required: true, message: 'Please select your habitual residence!' },
+							{ required: true, message: 'Please select book author.' },
 						],
 					})(
 						<Select
@@ -81,7 +81,7 @@ class AddBookForm extends PureComponent {
 				</Form.Item>
 				<Form.Item label="ISBN">
 					{getFieldDecorator('isbn', {
-						rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+						rules: [{ required: true, message: 'Please input ISBN.', whitespace: true }],
 					})(
 						<Input
 							onChange={event => onFormItemChange(event.target.value, 'isbn')}
@@ -92,7 +92,7 @@ class AddBookForm extends PureComponent {
 				<Form.Item label="Publisher">
 					{getFieldDecorator('publisher', {
 						rules: [
-							{ required: true, message: 'Please select your habitual residence!' },
+							{ required: true, message: 'Please select book publisher.' },
 						],
 					})(
 						<Select
@@ -109,7 +109,7 @@ class AddBookForm extends PureComponent {
 					<Col span={7}>
 						<Form.Item label="Date published">
 							{getFieldDecorator('datePublished', {
-								rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+								rules: [{ required: true, message: 'Please input book published date.', whitespace: true }],
 							})(
 								<Input
 									onChange={event => onFormItemChange(event.target.value, 'datePublished')}
@@ -124,7 +124,7 @@ class AddBookForm extends PureComponent {
 					<Col span={5}>
 						<Form.Item label="Number of pages">
 							{getFieldDecorator('numberOfPages', {
-								rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+								rules: [{ required: true, message: 'Please input number of pages.', whitespace: true }],
 							})(
 								<Input
 									onChange={event => onFormItemChange(event.target.value, 'numberOfPages')}
@@ -140,7 +140,7 @@ class AddBookForm extends PureComponent {
 						<Form.Item label="Format">
 							{getFieldDecorator('format', {
 								rules: [
-									{ required: true, message: 'Please select your habitual residence!' },
+									{ required: true, message: 'Please select book format.' },
 								],
 							})(
 								<Select
@@ -159,7 +159,7 @@ class AddBookForm extends PureComponent {
 					<Col span={7}>
 						<Form.Item label="Edition">
 							{getFieldDecorator('edition', {
-								rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+								rules: [{ required: true, message: 'Please input book edition.', whitespace: true }],
 							})(
 								<Input
 									onChange={event => onFormItemChange(event.target.value, 'edition')}
@@ -172,7 +172,7 @@ class AddBookForm extends PureComponent {
 						<Form.Item style={{ marginLeft: 10 }} label="Edition language">
 							{getFieldDecorator('editionLanguage', {
 								rules: [
-									{ required: true, message: 'Please select your habitual residence!' },
+									{ required: true, message: 'Please select edition language.' },
 								],
 							})(
 								<Select

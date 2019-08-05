@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { selectGenre } from '../../data/books/BooksActions';
 import {
 	ALL_STEPS,
 	STEP_IDS,
-} from '../../lib/constants/bookData';
+} from '../../lib/constants/BookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
@@ -87,7 +87,7 @@ class Genres extends PureComponent {
 		} = this.props;
 
 		return (
-			<div>
+			<Fragment>
 				<StepsIndicator
 					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
 					activeStepIndex={0}
@@ -109,7 +109,7 @@ class Genres extends PureComponent {
 						disabledRight={!selectedGenreId}
 					/>
 				</ContentWrapper>
-			</div>
+			</Fragment>
 		);
 	}
 }

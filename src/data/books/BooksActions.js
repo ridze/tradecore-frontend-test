@@ -72,3 +72,7 @@ export function addBook(dispatch, selectedGenreIndex, selectedSubgenreIndex, boo
 		},
 	});
 }
+
+export function removeBookAddedFlag(dispatch) {
+	dispatch({ type: BOOKS_TYPES.REMOVE_BOOK_ADDED_FLAG });
+}

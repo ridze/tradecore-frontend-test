@@ -24,6 +24,7 @@ const initialState = fromJS({
 		editionLanguage: '',
 		description: '',
 	},
+	bookAddedSuccessfully: null,
 });
 
 export default function booksReducer(state = initialState, action) {
@@ -40,12 +41,14 @@ export default function booksReducer(state = initialState, action) {
 		return state
 			.set('selectedGenreId', action.payload)
 			.set('selectedSubgenreId', null)
-			.set('isAddNewSubgenreSelected', false);
+			.set('isAddNewSubgenreSelected', false)
+			.set('newSubgenre', initialState.get('newSubgenre'));
 	}
 	case BOOKS_TYPES.SELECT_SUBGENRE: {
 		return state
 			.set('selectedSubgenreId', action.payload)
-			.set('isAddNewSubgenreSelected', false);
+			.set('isAddNewSubgenreSelected', false)
+			.set('newSubgenre', initialState.get('newSubgenre'));
 	}
 	case BOOKS_TYPES.SELECT_ADD_NEW_SUBGENRE: {
 		return state
@@ -93,9 +96,19 @@ export default function booksReducer(state = initialState, action) {
 			selectedSubgenreIndex,
 			book,
 		} = action.payload;
-		return state.updateIn(['data', 'genres', selectedGenreIndex, 'subgenres', selectedSubgenreIndex], (subgenre) => {
-			return subgenre.get('books') ? subgenre.update('books', books => books.push(book)) : subgenre.set('books', List([book]));
-		});
+		return state
+			.updateIn(['data', 'genres', selectedGenreIndex, 'subgenres', selectedSubgenreIndex], (subgenre) => {
+				return subgenre.get('books') ? subgenre.update('books', books => books.push(book)) : subgenre.set('books', List([book]));
+			})
+			.set('newBook', initialState.get('newBook'))
+			.set('newSubgenre', initialState.get('newSubgenre'))
+			.set('selectedGenreId', null)
+			.set('selectedSubgenreId', null)
+			.set('isAddNewSubgenreSelected', false)
+			.set('bookAddedSuccessfully', true);
+	}
+	case BOOKS_TYPES.REMOVE_BOOK_ADDED_FLAG: {
+		return state.set('bookAddedSuccessfully', null);
 	}
 	default: {
 		return state;

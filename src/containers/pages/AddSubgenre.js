@@ -1,7 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 import customBindActionCreators from '../../lib/customBindActionCreators';
 
 // Actions
@@ -10,18 +11,23 @@ import {
 } from '../../data/books/BooksActions';
 
 // Constants
-import { ALL_STEPS, STEP_IDS } from '../../lib/constants/bookData';
+import { ALL_STEPS, STEP_IDS } from '../../lib/constants/BookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import ControlButtons from '../../components/ControlButtons';
-import { ContentWrapper, CheckboxWrapper } from '../../components/Wrappers';
+import { ContentWrapper } from '../../components/Wrappers';
 
 // Ant design components
 import { Input, Checkbox, message } from 'antd';
 
 // Helpers
 import { mapIdsToSteps } from '../../lib/helpers';
+
+// Page Specific
+const CheckboxWrapper = styled.div`
+	padding: 20px 0px 10px 0px;
+`;
 
 const myStepsIds = [STEP_IDS.GENRE, STEP_IDS.SUBGENRE, STEP_IDS.ADD_SUBGENRE, STEP_IDS.INFORMATION];
 
@@ -109,7 +115,7 @@ class AddSubgenre extends PureComponent {
 		} = this.props;
 
 		return (
-			<div>
+			<Fragment>
 				<StepsIndicator
 					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
 					activeStepIndex={2}
@@ -136,7 +142,7 @@ class AddSubgenre extends PureComponent {
 						/>
 					</ContentWrapper>
 				)}
-			</div>
+			</Fragment>
 		);
 	}
 }

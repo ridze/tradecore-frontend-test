@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 import { selectGenre, selectSubgenre, selectAddNewSubgenre } from '../../data/books/BooksActions';
 
 // Constants
-import { ALL_STEPS, STEP_IDS } from '../../lib/constants/bookData';
+import { ALL_STEPS, STEP_IDS } from '../../lib/constants/BookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
@@ -118,7 +118,7 @@ class Subgenres extends PureComponent {
 		} = this.props;
 
 		return (
-			<div>
+			<Fragment>
 				<StepsIndicator
 					steps={mapIdsToSteps(myStepsIds, ALL_STEPS)}
 					activeStepIndex={1}
@@ -147,7 +147,7 @@ class Subgenres extends PureComponent {
 						/>
 					</ContentWrapper>
 				)}
-			</div>
+			</Fragment>
 		);
 	}
 }

@@ -6,6 +6,14 @@ export const ContentWrapper = styled.div`
 	padding: 50px;
 `;
 
-export const CheckboxWrapper = styled.div`
-	padding: 20px 0px 10px 0px;
+export const CenteredWrapper = styled.div`
+	width: 700px;
+	height: 500px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;

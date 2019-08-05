@@ -1,6 +1,6 @@
 import { put, takeEvery, all } from 'redux-saga/effects'
 import BOOKS_TYPES from './BooksTypes';
-import libraryData from '../../lib/constants/libraryData';
+import libraryData from '../../lib/constants/LibraryData';
 
 const simulateGetLibraryData = (seconds) => new Promise(resolve => setTimeout(() => resolve(libraryData), seconds * 1000));
 

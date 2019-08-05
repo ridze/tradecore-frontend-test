@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -8,16 +8,17 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 
 // Actions
 import {
-	addSubgenre, selectGenre, selectSubgenre, setNewBookData, addBook,
+	addSubgenre, selectGenre, selectSubgenre, setNewBookData, addBook, removeBookAddedFlag,
 } from '../../data/books/BooksActions';
 
 // Constants
-import { ALL_STEPS, STEP_IDS } from '../../lib/constants/bookData';
+import { ALL_STEPS, STEP_IDS } from '../../lib/constants/BookData';
 
 // Components
 import StepsIndicator from '../../components/StepsIndicator';
 import AddBookForm from '../../components/AddBookForm';
 import ControlButtons from '../../components/ControlButtons';
+import BookAddedSuccessfully from '../../components/BookAddedSuccessfully';
 import { ContentWrapper } from '../../components/Wrappers';
 
 // Helpers
@@ -148,6 +149,13 @@ class BookInformation extends PureComponent {
 		}, true);
 	};
 
+	redirectToGenres = () => {
+		const {
+			history,
+		} = this.props;
+		history.push('/genres');
+	};
+
 	render() {
 		const {
 			initialized,
@@ -156,10 +164,21 @@ class BookInformation extends PureComponent {
 
 		const {
 			newBook,
+			bookAddedSuccessfully,
+			removeBookAddedFlag,
 		} = this.props;
 
+		if (bookAddedSuccessfully) {
+			return (
+				<BookAddedSuccessfully
+					onUnmount={removeBookAddedFlag}
+					onAddAnotherBook={this.redirectToGenres}
+				/>
+			);
+		}
+
 		return (
-			<div>
+			<Fragment>
 				<StepsIndicator
 					steps={mapIdsToSteps(this.myStepsIds, ALL_STEPS)}
 					activeStepIndex={this.activeStepIndex}
@@ -182,7 +201,7 @@ class BookInformation extends PureComponent {
 						/>
 					</ContentWrapper>
 				)}
-			</div>
+			</Fragment>
 		);
 	}
 }
@@ -190,13 +209,16 @@ class BookInformation extends PureComponent {
 BookInformation.propTypes = {
 	selectGenre: PropTypes.func.isRequired,
 	selectSubgenre: PropTypes.func.isRequired,
+	removeBookAddedFlag: PropTypes.func.isRequired,
 	selectedGenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,
+	bookAddedSuccessfully: PropTypes.bool,
 };
 
 BookInformation.defaultProps = {
 	selectedGenreId: null,
 	isAddNewSubgenreSelected: false,
+	bookAddedSuccessfully: null,
 };
 
 function mapStateToProps(state) {
@@ -205,6 +227,7 @@ function mapStateToProps(state) {
 		selectedGenreId: state.getIn(['books', 'selectedGenreId']),
 		isAddNewSubgenreSelected: state.getIn(['books', 'isAddNewSubgenreSelected']),
 		newBook: state.getIn(['books', 'newBook']),
+		bookAddedSuccessfully: state.getIn(['books', 'bookAddedSuccessfully']),
 	};
 }
 
@@ -215,6 +238,7 @@ function mapDispatchToProps(dispatch) {
 		addSubgenre,
 		setNewBookData,
 		addBook,
+		removeBookAddedFlag,
 	}, dispatch);
 }
 

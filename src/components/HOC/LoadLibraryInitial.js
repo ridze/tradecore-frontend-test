@@ -7,6 +7,9 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 // Actions
 import { loadLibraryAsync } from '../../data/books/BooksActions';
 
+// Components
+import CenteredSpinner from '../CenteredSpinner';
+
 // Used to preload library data to redux
 class LoadLibraryInitial extends PureComponent {
 	componentDidMount() {
@@ -20,7 +23,7 @@ class LoadLibraryInitial extends PureComponent {
 			children,
 		} = this.props;
 		if (!initialized) {
-			return null;
+			return <CenteredSpinner />;
 		}
 		return children;
 	}
