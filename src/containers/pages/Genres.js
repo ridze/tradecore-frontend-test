@@ -60,13 +60,6 @@ class Genres extends PureComponent {
 		}
 	}
 
-	onBackButtonClick = () => {
-		const {
-			history,
-		} = this.props;
-		history.push('/home');
-	};
-
 	onNextButtonClick = () => {
 		const {
 			history,
