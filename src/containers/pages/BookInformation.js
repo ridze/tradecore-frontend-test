@@ -133,6 +133,7 @@ class BookInformation extends PureComponent {
 		} = this.props;
 
 		const books = genres.getIn([selectedGenreIndex, 'subgenres', selectedSubgenreIndex, 'books']);
+
 		if (bookAlreadyExists(books, newBook)) {
 			return message.info('Book with same title and by same author already exists.', 5);
 		}
@@ -146,8 +147,8 @@ class BookInformation extends PureComponent {
 		const [...keys] = newBook.keys();
 		return keys.reduce((acc, key, index) => {
 			if (!this.formItemValidator(newBook.get(key), key)) {
-				acc = false;
 				keys.splice(0, index + 1); // exit loop
+				return false;
 			}
 			return acc;
 		}, true);

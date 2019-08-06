@@ -21,16 +21,13 @@ const formats = ['Format1', 'Format2', 'Format3'];
 const languages = ['Language1', 'Language2', 'Language3'];
 
 class AddBookForm extends PureComponent {
-	constructor(props) {
-		super(props);
-	}
-
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const {
 			onSubmit,
+			form,
 		} = this.props;
-		this.props.form.validateFieldsAndScroll((err) => {
+		form.validateFieldsAndScroll((err) => {
 			if (!err) {
 				onSubmit();
 			}
@@ -42,7 +39,6 @@ class AddBookForm extends PureComponent {
 			form,
 			id,
 			isDescriptionRequired,
-			onFormItemChange,
 		} = this.props;
 
 		const { getFieldDecorator } = form;
@@ -57,25 +53,15 @@ class AddBookForm extends PureComponent {
 					{getFieldDecorator('title', {
 						rules: [{ required: true, message: 'Please input book title.', whitespace: true }],
 					})(
-						<Input
-							onChange={event => onFormItemChange(event.target.value, 'title')}
-							placeholder="Book Title"
-						/>
+						<Input placeholder="Book Title" />
 					)}
 				</Form.Item>
 				<Form.Item label="Author">
 					{getFieldDecorator('author', {
-						rules: [
-							{ required: true, message: 'Please select book author.' },
-						],
+						rules: [{ required: true, message: 'Please select book author.' }],
 					})(
-						<Select
-							onChange={value => onFormItemChange(value, 'author')}
-							placeholder="Author"
-						>
-							{authors.map(author => (
-								<Option key={author}>{author}</Option>
-							))}
+						<Select placeholder="Author">
+							{authors.map(author => (<Option key={author}>{author}</Option>))}
 						</Select>
 					)}
 				</Form.Item>
@@ -83,25 +69,15 @@ class AddBookForm extends PureComponent {
 					{getFieldDecorator('isbn', {
 						rules: [{ required: true, message: 'Please input ISBN.', whitespace: true }],
 					})(
-						<Input
-							onChange={event => onFormItemChange(event.target.value, 'isbn')}
-							placeholder="ISBN"
-						/>
+						<Input placeholder="ISBN" />
 					)}
 				</Form.Item>
 				<Form.Item label="Publisher">
 					{getFieldDecorator('publisher', {
-						rules: [
-							{ required: true, message: 'Please select book publisher.' },
-						],
+						rules: [{ required: true, message: 'Please select book publisher.' }],
 					})(
-						<Select
-							onChange={value => onFormItemChange(value, 'publisher')}
-							placeholder="Publisher"
-						>
-							{publishers.map(publisher => (
-								<Option key={publisher}>{publisher}</Option>
-							))}
+						<Select placeholder="Publisher">
+							{publishers.map(publisher => (<Option key={publisher}>{publisher}</Option>))}
 						</Select>
 					)}
 				</Form.Item>
@@ -111,11 +87,7 @@ class AddBookForm extends PureComponent {
 							{getFieldDecorator('datePublished', {
 								rules: [{ required: true, message: 'Please input book published date.', whitespace: true }],
 							})(
-								<Input
-									onChange={event => onFormItemChange(event.target.value, 'datePublished')}
-									type="date"
-									placeholder="Date published"
-								/>
+								<Input type="date" placeholder="Date published" />
 							)}
 						</Form.Item>
 					</Col>
@@ -126,11 +98,7 @@ class AddBookForm extends PureComponent {
 							{getFieldDecorator('numberOfPages', {
 								rules: [{ required: true, message: 'Please input number of pages.', whitespace: true }],
 							})(
-								<Input
-									onChange={event => onFormItemChange(event.target.value, 'numberOfPages')}
-									type="number"
-									placeholder="Number of pages"
-								/>
+								<Input type="number" placeholder="Number of pages" />
 							)}
 						</Form.Item>
 					</Col>
@@ -139,17 +107,10 @@ class AddBookForm extends PureComponent {
 					<Col span={7}>
 						<Form.Item label="Format">
 							{getFieldDecorator('format', {
-								rules: [
-									{ required: true, message: 'Please select book format.' },
-								],
+								rules: [{ required: true, message: 'Please select book format.' }],
 							})(
-								<Select
-									onChange={value => onFormItemChange(value, 'format')}
-									placeholder="Format"
-								>
-									{formats.map(format => (
-										<Option key={format}>{format}</Option>
-									))}
+								<Select placeholder="Format">
+									{formats.map(format => (<Option key={format}>{format}</Option>))}
 								</Select>
 							)}
 						</Form.Item>
@@ -161,24 +122,16 @@ class AddBookForm extends PureComponent {
 							{getFieldDecorator('edition', {
 								rules: [{ required: true, message: 'Please input book edition.', whitespace: true }],
 							})(
-								<Input
-									onChange={event => onFormItemChange(event.target.value, 'edition')}
-									placeholder="Edition"
-								/>
+								<Input placeholder="Edition" />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={7}>
 						<Form.Item style={{ marginLeft: 10 }} label="Edition language">
 							{getFieldDecorator('editionLanguage', {
-								rules: [
-									{ required: true, message: 'Please select edition language.' },
-								],
+								rules: [{ required: true, message: 'Please select edition language.' }],
 							})(
-								<Select
-									onChange={value => onFormItemChange(value, 'editionLanguage')}
-									placeholder="Edition language"
-								>
+								<Select placeholder="Edition language">
 									{languages.map(language => (
 										<Option key={language}>{language}</Option>
 									))}
@@ -193,7 +146,6 @@ class AddBookForm extends PureComponent {
 					})(
 						<TextArea
 							autosize
-							onChange={event => onFormItemChange(event.target.value, 'description')}
 							placeholder="Type the description"
 						/>
 					)}
@@ -203,14 +155,23 @@ class AddBookForm extends PureComponent {
 	}
 }
 
+AddBookForm.propTypes = {
+	isDescriptionRequired: PropTypes.bool.isRequired,
+	onSubmit: PropTypes.func.isRequired,
+	newBook: PropTypes.shape({}).isRequired,
+	form: PropTypes.shape({}).isRequired,
+	id: PropTypes.string.isRequired,
+};
+
 const WrappedAddBookForm = Form.create({
 	name: 'addBookForm',
 	onFieldsChange(props, changedFields) {
-		const key = Object.keys(changedFields)[0];
+		const [key] = Object.keys(changedFields);
 		if (key) {
-			const value = changedFields[key].value;
+			const { value } = changedFields[key];
 			return value !== props.newBook.get(key) ? props.onFormItemChange(value, key) : false;
 		}
+		return false;
 	},
 
 	mapPropsToFields(props) {
@@ -220,12 +181,5 @@ const WrappedAddBookForm = Form.create({
 		}, {});
 	},
 })(AddBookForm);
-
-WrappedAddBookForm.propTypes = {
-	isDescriptionRequired: PropTypes.bool.isRequired,
-	onFormItemChange: PropTypes.func.isRequired,
-	onSubmit: PropTypes.func.isRequired,
-	newBook: PropTypes.shape({}).isRequired,
-};
 
 export default WrappedAddBookForm;
