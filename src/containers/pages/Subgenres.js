@@ -30,11 +30,11 @@ class Subgenres extends PureComponent {
 
 	componentDidMount() {
 		const {
+			actions,
 			history,
 			match,
 			genres,
 			selectedGenreId,
-			selectGenre,
 		} = this.props;
 		const {
 			genreId,
@@ -45,7 +45,7 @@ class Subgenres extends PureComponent {
 		if (selectedGenreIndex !== -1) {
 			this.setState({ selectedGenreIndex });
 			if (selectedGenreId !== Number(genreId)) {
-				selectGenre(Number(genreId));
+				actions.selectGenre(Number(genreId));
 			}
 		} else { // Wrong genreId
 			message.error('Requested genre does not exist, please, select from existing ones.', 5);
@@ -76,12 +76,15 @@ class Subgenres extends PureComponent {
 			selectedGenreIndex,
 		} = this.state;
 		const {
+			actions,
 			genres,
 			selectedSubgenreId,
 			isAddNewSubgenreSelected,
-			selectSubgenre,
-			selectAddNewSubgenre,
 		} = this.props;
+
+		if (selectedGenreIndex === -1) {
+			return null;
+		}
 
 		return (
 			<Fragment>
@@ -89,43 +92,41 @@ class Subgenres extends PureComponent {
 					steps={determineCurrentSteps(selectedSubgenreId, isAddNewSubgenreSelected)}
 					activeStepIndex={1}
 				/>
-				{selectedGenreIndex !== -1 && (
-					<ContentWrapper>
-						<div>
-							{genres.getIn([selectedGenreIndex, 'subgenres']).map(subgenre => (
-								<ItemButton
-									name={subgenre.get('name')}
-									selected={selectedSubgenreId === subgenre.get('id')}
-									onClick={() => selectSubgenre(subgenre.get('id'))}
-									key={`${subgenre.get('id')}-${subgenre.get('name')}`}
-								/>
-							))}
+				<ContentWrapper>
+					<div>
+						{genres.getIn([selectedGenreIndex, 'subgenres']).map(subgenre => (
 							<ItemButton
-								name="Add New"
-								selected={isAddNewSubgenreSelected}
-								onClick={selectAddNewSubgenre}
+								name={subgenre.get('name')}
+								selected={selectedSubgenreId === subgenre.get('id')}
+								onClick={() => actions.selectSubgenre(subgenre.get('id'))}
+								key={`${subgenre.get('id')}-${subgenre.get('name')}`}
 							/>
-						</div>
-						<ControlButtons
-							onLeftButtonClick={this.onBackButtonClick}
-							onRightButtonClick={this.onNextButtonClick}
-							disabledRight={!(isAddNewSubgenreSelected || selectedSubgenreId)}
+						))}
+						<ItemButton
+							name="Add New"
+							selected={isAddNewSubgenreSelected}
+							onClick={actions.selectAddNewSubgenre}
 						/>
-					</ContentWrapper>
-				)}
+					</div>
+					<ControlButtons
+						onLeftButtonClick={this.onBackButtonClick}
+						onRightButtonClick={this.onNextButtonClick}
+						disabledRight={!(isAddNewSubgenreSelected || selectedSubgenreId)}
+					/>
+				</ContentWrapper>
 			</Fragment>
 		);
 	}
 }
 
 Subgenres.propTypes = {
+	actions: PropTypes.shape({}).isRequired,
 	match: PropTypes.shape({}).isRequired,
 	history: PropTypes.shape({}).isRequired,
 	genres: PropTypes.shape({}).isRequired,
 	selectedGenreId: PropTypes.number,
 	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,
-	selectSubgenre: PropTypes.func.isRequired,
 };
 
 Subgenres.defaultProps = {
@@ -144,11 +145,13 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-	return customBindActionCreators({
-		selectGenre,
-		selectSubgenre,
-		selectAddNewSubgenre,
-	}, dispatch);
+	return {
+		actions: customBindActionCreators({
+			selectGenre,
+			selectSubgenre,
+			selectAddNewSubgenre,
+		}, dispatch),
+	};
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Subgenres));

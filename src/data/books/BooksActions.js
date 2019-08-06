@@ -1,10 +1,22 @@
 import BOOKS_TYPES from './BooksTypes';
 
+// Async actions
 export function loadLibraryAsync(dispatch) {
 	dispatch({ type: BOOKS_TYPES.LOAD_LIBRARY_ASYNC });
 }
 
-// Below actions are not async are not using saga
+export function addBookAsync(dispatch, selectedGenreIndex, selectedSubgenreIndex, book) {
+	dispatch({
+		type: BOOKS_TYPES.ADD_BOOK_ASYNC,
+		payload: {
+			selectedGenreIndex,
+			selectedSubgenreIndex,
+			book,
+		},
+	});
+}
+
+// Below actions are not async and therefore are not using saga
 export function selectGenre(dispatch, genreId) {
 	dispatch({
 		type: BOOKS_TYPES.SELECT_GENRE,
@@ -55,17 +67,6 @@ export function setNewBookData(dispatch, key, value) {
 		payload: {
 			key,
 			value,
-		},
-	});
-}
-
-export function addBook(dispatch, selectedGenreIndex, selectedSubgenreIndex, book) {
-	dispatch({
-		type: BOOKS_TYPES.ADD_BOOK_ASYNC,
-		payload: {
-			selectedGenreIndex,
-			selectedSubgenreIndex,
-			book,
 		},
 	});
 }

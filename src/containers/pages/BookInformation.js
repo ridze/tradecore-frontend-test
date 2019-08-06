@@ -8,7 +8,7 @@ import customBindActionCreators from '../../lib/customBindActionCreators';
 
 // Actions
 import {
-	addSubgenre, selectGenre, selectSubgenre, setNewBookData, addBook, removeBookAddedFlag,
+	addSubgenre, selectGenre, selectSubgenre, setNewBookData, addBookAsync, removeBookAddedFlag,
 } from '../../data/books/BooksActions';
 
 // Constants
@@ -41,8 +41,7 @@ class BookInformation extends PureComponent {
 			match,
 			history,
 			genres,
-			selectGenre,
-			selectSubgenre,
+			actions,
 			selectedGenreId,
 			selectedSubgenreId,
 			isAddNewSubgenreSelected,
@@ -64,7 +63,7 @@ class BookInformation extends PureComponent {
 
 		// If does exist and it is not yet selected (user refreshes, clicks link) select it
 		if (selectedGenreIndex !== -1 && selectedGenreId !== Number(genreId)) {
-			selectGenre(Number(genreId));
+			actions.selectGenre(Number(genreId));
 		}
 
 		// Check if subgenre with subgenreId from params exist
@@ -99,7 +98,7 @@ class BookInformation extends PureComponent {
 			// check if selectedSubgenreId is marked in redux (has page just loaded)
 			// also check if subgenre wasn't added immediately before this page, in that case just keep Add New Subgenre button selected
 			if (selectedSubgenreId !== Number(subgenreId) && !isAddNewSubgenreSelected) {
-				selectSubgenre(Number(subgenreId));
+				actions.selectSubgenre(Number(subgenreId));
 			}
 		}
 	}
@@ -117,9 +116,9 @@ class BookInformation extends PureComponent {
 
 	onFormItemChange = (value, key) => {
 		const {
-			setNewBookData,
+			actions,
 		} = this.props;
-		setNewBookData(key, value);
+		actions.setNewBookData(key, value);
 	};
 
 	addNewBook = () => {
@@ -130,14 +129,14 @@ class BookInformation extends PureComponent {
 		const {
 			genres,
 			newBook,
-			addBook,
+			actions,
 		} = this.props;
 
 		const books = genres.getIn([selectedGenreIndex, 'subgenres', selectedSubgenreIndex, 'books']);
 		if (bookAlreadyExists(books, newBook)) {
 			return message.info('Book with same title and by same author already exists.', 5);
 		}
-		return addBook(selectedGenreIndex, selectedSubgenreIndex, newBook);
+		return actions.addBookAsync(selectedGenreIndex, selectedSubgenreIndex, newBook);
 	};
 
 	isFormValid = () => {
@@ -173,44 +172,45 @@ class BookInformation extends PureComponent {
 			newBook,
 			addingBookAsync,
 			bookAddedSuccessfully,
-			removeBookAddedFlag,
+			actions,
 		} = this.props;
 
 		if (bookAddedSuccessfully) {
 			return (
 				<BookAddedSuccessfully
-					onUnmount={removeBookAddedFlag}
+					onUnmount={actions.removeBookAddedFlag}
 					onAddAnotherBook={this.redirectToGenres}
 				/>
 			);
 		}
 
-		// console.log(selectSubgenreId);
+		if (!initialized) {
+			return null;
+		}
+
 		return (
 			<Fragment>
 				<StepsIndicator
 					steps={determineCurrentSteps(selectedSubgenreId, isAddNewSubgenreSelected)}
 					activeStepIndex={isAddNewSubgenreSelected ? 3 : 2}
 				/>
-				{initialized && (
-					<ContentWrapper>
-						<AddBookForm
-							id="addBookForm"
-							isDescriptionRequired={isDescriptionRequired}
-							newBook={newBook}
-							onFormItemChange={this.onFormItemChange}
-							onSubmit={this.addNewBook}
-						/>
-						<ControlButtons
-							rightButtonForm="addBookForm"
-							onLeftButtonClick={this.onBackButtonClick}
-							onRightButtonClick={() => {}}
-							rightButtonText="Add"
-							disabledRight={addingBookAsync || !this.isFormValid()}
-						/>
-						{addingBookAsync && (<AddingBookSpinner />)}
-					</ContentWrapper>
-				)}
+				<ContentWrapper>
+					<AddBookForm
+						id="addBookForm"
+						isDescriptionRequired={isDescriptionRequired}
+						newBook={newBook}
+						onFormItemChange={this.onFormItemChange}
+						onSubmit={this.addNewBook}
+					/>
+					<ControlButtons
+						rightButtonForm="addBookForm"
+						onLeftButtonClick={this.onBackButtonClick}
+						onRightButtonClick={() => {}}
+						rightButtonText="Add"
+						disabledRight={addingBookAsync || !this.isFormValid()}
+					/>
+					{addingBookAsync && (<AddingBookSpinner />)}
+				</ContentWrapper>
 			</Fragment>
 		);
 	}
@@ -221,10 +221,7 @@ BookInformation.propTypes = {
 	history: PropTypes.shape({}).isRequired,
 	genres: PropTypes.shape({}).isRequired,
 	newBook: PropTypes.shape({}).isRequired,
-	selectGenre: PropTypes.func.isRequired,
-	selectSubgenre: PropTypes.func.isRequired,
-	setNewBookData: PropTypes.func.isRequired,
-	removeBookAddedFlag: PropTypes.func.isRequired,
+	actions: PropTypes.shape({}).isRequired,
 	selectedGenreId: PropTypes.number,
 	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,
@@ -252,14 +249,16 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-	return customBindActionCreators({
-		selectGenre,
-		selectSubgenre,
-		addSubgenre,
-		setNewBookData,
-		addBook,
-		removeBookAddedFlag,
-	}, dispatch);
+	return {
+		actions: customBindActionCreators({
+			selectGenre,
+			selectSubgenre,
+			addSubgenre,
+			setNewBookData,
+			addBookAsync,
+			removeBookAddedFlag,
+		}, dispatch),
+	};
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BookInformation));

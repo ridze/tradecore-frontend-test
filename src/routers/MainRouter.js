@@ -9,13 +9,16 @@ import MainLayout from '../containers/layouts/MainLayout';
 // Routers
 import AddBookRouter from './AddBookRouter';
 
+// Components
+import { SmallHeader } from '../components/Text';
+
 const MainRouter = () => (
 	<MainLayout>
 		<Switch>
 			<Route
 				exact
 				path="/"
-				render={() => (<div>Home</div>)}
+				render={() => (<SmallHeader>Home</SmallHeader>)}
 			/>
 			<Route
 				path="/genres"

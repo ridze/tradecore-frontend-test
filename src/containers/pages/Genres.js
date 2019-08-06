@@ -26,11 +26,11 @@ const Genres = (props) => {
 	};
 
 	const {
+		actions,
 		genres,
 		selectedGenreId,
 		selectedSubgenreId,
 		isAddNewSubgenreSelected,
-		selectGenre,
 	} = props;
 
 	return (
@@ -45,7 +45,7 @@ const Genres = (props) => {
 						<ItemButton
 							name={genre.get('name')}
 							selected={selectedGenreId === genre.get('id')}
-							onClick={() => selectGenre(genre.get('id'))}
+							onClick={() => actions.selectGenre(genre.get('id'))}
 							key={`${genre.get('id')}-${genre.get('name')}`}
 						/>
 					))}
@@ -61,12 +61,12 @@ const Genres = (props) => {
 };
 
 Genres.propTypes = {
+	actions: PropTypes.shape({}).isRequired,
 	history: PropTypes.shape({}).isRequired,
 	genres: PropTypes.shape({}).isRequired,
 	selectedGenreId: PropTypes.number,
 	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,
-	selectGenre: PropTypes.func.isRequired,
 };
 
 Genres.defaultProps = {
@@ -85,9 +85,11 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-	return customBindActionCreators({
-		selectGenre,
-	}, dispatch);
+	return {
+		actions: customBindActionCreators({
+			selectGenre,
+		}, dispatch),
+	};
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Genres));

@@ -31,7 +31,7 @@ class AddSubgenre extends PureComponent {
 		super(props);
 		this.state = {
 			initialized: false,
-			selectedGenreIndex: null,
+			selectedGenreIndex: -1,
 		};
 	}
 
@@ -40,8 +40,7 @@ class AddSubgenre extends PureComponent {
 			history,
 			match,
 			genres,
-			selectGenre,
-			selectAddNewSubgenre,
+			actions,
 		} = this.props;
 		const {
 			genreId,
@@ -51,8 +50,8 @@ class AddSubgenre extends PureComponent {
 		const selectedGenreIndex = genres.findIndex(genre => genre.get('id') === Number(genreId));
 
 		if (selectedGenreIndex !== -1) {
-			selectGenre(Number(genreId));
-			selectAddNewSubgenre();
+			actions.selectGenre(Number(genreId));
+			actions.selectAddNewSubgenre();
 			this.setState({
 				initialized: true,
 				selectedGenreIndex,
@@ -76,9 +75,8 @@ class AddSubgenre extends PureComponent {
 			selectedGenreIndex,
 		} = this.state;
 		const {
+			actions,
 			history,
-			resetNewSubgenreData,
-			addSubgenre,
 			selectedGenreId,
 			genres,
 			name,
@@ -90,10 +88,10 @@ class AddSubgenre extends PureComponent {
 		const id = existingSubgenry ? existingSubgenry.get('id') : Math.random() * Math.pow(10, 16);
 
 		if (existingSubgenry) {
-			resetNewSubgenreData();
+			actions.resetNewSubgenreData();
 			message.info('Subgenre existed already.', 5);
 		} else {
-			addSubgenre(selectedGenreIndex, name, isDescriptionRequired, id);
+			actions.addSubgenre(selectedGenreIndex, name, isDescriptionRequired, id);
 			message.success('Added subgenre successfully.');
 		}
 		history.push(`/genres/${selectedGenreId}/${id}/add-book`);
@@ -101,9 +99,9 @@ class AddSubgenre extends PureComponent {
 
 	handleFieldChange = (key, value) => {
 		const {
-			setNewSubgenreData,
+			actions,
 		} = this.props;
-		setNewSubgenreData(key, value);
+		actions.setNewSubgenreData(key, value);
 	};
 
 	render() {
@@ -118,44 +116,46 @@ class AddSubgenre extends PureComponent {
 			isDescriptionRequired,
 		} = this.props;
 
+		if (!initialized) {
+			return null;
+		}
+
 		return (
 			<Fragment>
 				<StepsIndicator
 					steps={determineCurrentSteps(selectedSubgenreId, isAddNewSubgenreSelected)}
 					activeStepIndex={2}
 				/>
-				{initialized && (
-					<ContentWrapper>
-						<Input
-							value={name}
-							onChange={event => this.handleFieldChange('name', event.target.value)}
-							placeholder="Subgenre name"
-						/>
-						<CheckboxWrapper>
-							<Checkbox
-								checked={isDescriptionRequired}
-								onChange={event => this.handleFieldChange('isDescriptionRequired', event.target.checked)}
-							>
-								Description is required for this subgenre
-							</Checkbox>
-						</CheckboxWrapper>
-						<ControlButtons
-							onLeftButtonClick={this.onBackButtonClick}
-							onRightButtonClick={this.onNextButtonClick}
-							disabledRight={!name}
-						/>
-					</ContentWrapper>
-				)}
+				<ContentWrapper>
+					<Input
+						value={name}
+						onChange={event => this.handleFieldChange('name', event.target.value)}
+						placeholder="Subgenre name"
+					/>
+					<CheckboxWrapper>
+						<Checkbox
+							checked={isDescriptionRequired}
+							onChange={event => this.handleFieldChange('isDescriptionRequired', event.target.checked)}
+						>
+							Description is required for this subgenre
+						</Checkbox>
+					</CheckboxWrapper>
+					<ControlButtons
+						onLeftButtonClick={this.onBackButtonClick}
+						onRightButtonClick={this.onNextButtonClick}
+						disabledRight={!name}
+					/>
+				</ContentWrapper>
 			</Fragment>
 		);
 	}
 }
 
 AddSubgenre.propTypes = {
-	selectGenre: PropTypes.func.isRequired,
-	selectAddNewSubgenre: PropTypes.func.isRequired,
-	setNewSubgenreData: PropTypes.func.isRequired,
-	addSubgenre: PropTypes.func.isRequired,
+	match: PropTypes.shape({}).isRequired,
+	history: PropTypes.shape({}).isRequired,
+	genres: PropTypes.shape({}).isRequired,
+	actions: PropTypes.shape({}).isRequired,
 	selectedGenreId: PropTypes.number,
 	selectedSubgenreId: PropTypes.number,
 	isAddNewSubgenreSelected: PropTypes.bool,
@@ -181,13 +181,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-	return customBindActionCreators({
-		selectGenre,
-		selectAddNewSubgenre,
-		setNewSubgenreData,
-		resetNewSubgenreData,
-		addSubgenre,
-	}, dispatch);
+	return {
+		actions: customBindActionCreators({
+			selectGenre,
+			selectAddNewSubgenre,
+			setNewSubgenreData,
+			resetNewSubgenreData,
+			addSubgenre,
+		}, dispatch),
+	};
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddSubgenre));
